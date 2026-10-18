@@ -1,0 +1,7 @@
+.DS_Store
+*.tmp
+__pycache__/
+
+# xTool project files: the laser's own working format, regenerated from the
+# SVG every time. The SVG is the source.
+*.xs

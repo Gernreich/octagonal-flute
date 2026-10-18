@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Octagonal flute in 3D</title>
+<!-- Written by page_assets.py: do not edit by hand. -->
+<style>
+:root{--bg:#fbfbfa;--fg:#1a1c1e;--mut:#5b6067;--line:#e2e4e7;--card:#fff;--accent:#1d4ed8}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15171a;--fg:#e6e8ea;--mut:#9aa1a9;
+--line:#2b2f34;--card:#1b1e22;--accent:#7aa2f7}}
+:root[data-theme=dark]{--bg:#15171a;--fg:#e6e8ea;--mut:#9aa1a9;--line:#2b2f34;--card:#1b1e22;--accent:#7aa2f7}
+body{margin:0;padding:12px 14px;background:var(--bg);color:var(--fg);
+font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+</style>
+<script>
+/* Follow the theme the site's pages store, so this page matches the hub that frames it. */
+(function () {
+  var r = document.documentElement;
+  function apply() { var t = null; try { t = localStorage.getItem('ctg-theme'); } catch (e) {}
+    if (t === 'light' || t === 'dark') r.setAttribute('data-theme', t); else r.removeAttribute('data-theme'); }
+  apply(); addEventListener('storage', function (e) { if (e.key === 'ctg-theme') apply(); });
+})();
+</script>
+</head>
+<body>
+<div id="turn3d"></div><script src="viewer.js"></script>
+</body>
+</html>

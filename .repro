@@ -1,0 +1,21 @@
+# How every shipped SVG and page in this repository is drawn. Checked by
+# lasermade-tools/repro-svg.py; $OUT is where the file must be written.
+#
+# octagonal_flute.py names its own sheet, so it writes into $OUT's directory
+# and the tool compares the file it asked for. It imports square_flute.py from
+# the square-flute checkout beside this one, polyhedron.py and the mitred
+# offset from four-hole-ocarinas, and ribbon_bore.py from swept-curve, so all
+# four are expected side by side.
+
+# --- the cut file ---
+cut-files/octagonal-flute-D4-sheet1-cut-files.svg :: python3 octagonal_flute.py --out=$(dirname $OUT)
+
+# --- the preview, from the cut file ---
+previews/octagonal-flute-D4-sheet1-cut-files.svg :: python3 ../lasermade-tools/make-preview.py cut-files/octagonal-flute-D4-sheet1-cut-files.svg $OUT
+
+# --- the page ---
+viewer.js :: python3 page_assets.py --viewer-to=$OUT
+turn.html :: python3 page_assets.py --turn-to=$OUT
+plans/octagonal-flute-top-wall.svg :: python3 page_assets.py --plans-to=$(dirname $OUT)
+plans/octagonal-flute-fingering.svg :: python3 page_assets.py --plans-to=$(dirname $OUT)
+index.html :: python3 ../lasermade-tools/md2html.py README.md $OUT

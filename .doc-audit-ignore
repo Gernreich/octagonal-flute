@@ -1,0 +1,6 @@
+# Names doc-audit reads as filenames that are not files here.
+#
+# square_flute.py is in square-flute and polyhedron.py in four-hole-ocarinas.
+# octagonal_flute.py imports both, and the README links each repository.
+square_flute.py
+polyhedron.py

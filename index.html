@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Octagonal flute</title>
+<style>
+:root{--bg:#fbfbfa;--fg:#1a1c1e;--mut:#5b6067;--line:#e2e4e7;--card:#fff;--accent:#1d4ed8;
+--codebg:#f4f5f7;--thbg:#f0f1f3;--mark:#fff8c4}
+@media (prefers-color-scheme:dark){:root{--bg:#15171a;--fg:#e6e8ea;--mut:#9aa1a9;--line:#2b2f34;
+--card:#1b1e22;--accent:#7aa2f7;--codebg:#22262b;--thbg:#23272c;--mark:#4a411c}}
+:root[data-theme=dark]{--bg:#15171a;--fg:#e6e8ea;--mut:#9aa1a9;--line:#2b2f34;--card:#1b1e22;
+--accent:#7aa2f7;--codebg:#22262b;--thbg:#23272c;--mark:#4a411c}
+:root[data-theme=light]{--bg:#fbfbfa;--fg:#1a1c1e;--mut:#5b6067;--line:#e2e4e7;--card:#fff;
+--accent:#1d4ed8;--codebg:#f4f5f7;--thbg:#f0f1f3;--mark:#fff8c4}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+font:16px/1.62 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+-webkit-text-size-adjust:100%}
+.wrap{display:grid;grid-template-columns:250px minmax(0,1fr);gap:44px;max-width:1180px;
+margin:0 auto;padding:40px 28px 96px}
+nav{position:sticky;top:28px;align-self:start;max-height:calc(100vh - 56px);overflow:auto;
+border-right:1px solid var(--line);padding-right:16px;font-size:13.5px;line-height:1.45}
+nav b{display:block;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--mut);
+margin:0 0 12px}
+nav a{display:block;color:var(--mut);text-decoration:none;padding:3px 0;border-radius:4px}
+nav a:hover{color:var(--accent)}
+nav a.l1{color:var(--fg);font-weight:640;margin-top:11px}
+nav a.l2{padding-left:12px}
+main{min-width:0}
+h1{font-size:1.62rem;line-height:1.25;letter-spacing:-.015em;margin:2.4em 0 .5em;
+padding-bottom:.32em;border-bottom:2px solid var(--line)}
+main>h1:first-child{margin-top:0;border-bottom:none;font-size:1.95rem}
+h2{font-size:1.34rem;font-weight:680;margin:2.1em 0 .6em;letter-spacing:-.012em;
+padding:.1em 0 .1em .6em;border-left:4px solid var(--accent)}
+h3{font-size:1.02rem;font-weight:650;margin:1.7em 0 .45em}
+p{margin:.85em 0}
+ul,ol{margin:.85em 0;padding-left:1.35em}
+li{margin:.3em 0}
+/* A list with blank lines between its items is "loose", and pandoc wraps each item
+   in a <p> as GitHub does. These pages were set tight before pandoc, so they stay so. */
+li>p{margin:0}
+hr{border:0;border-top:1px solid var(--line);margin:2.6em 0}
+figure{margin:1.6em 0}
+/* A paragraph holding two or more images is a gallery. Left to inline layout they
+   wrap at whatever fits, which put three bells on one row and the fourth alone
+   underneath - directly above the caption, so it read as the caption for that one
+   picture rather than for the set. Flex lets them share the row instead. */
+p:has(img + img){display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;
+justify-content:center}
+p:has(img + img) img{flex:1 1 140px;min-width:0;width:auto;max-width:100%;height:auto;
+border:1px solid var(--line);border-radius:10px}
+figure svg,figure img{display:block;width:100%;max-width:100%;height:auto;
+border:1px solid var(--line);border-radius:10px}
+/* Any other image -- one inside a link, which is not a figure -- is held to the
+   column too. A cut-sheet preview linked to its cut file drew at its own size,
+   595mm wide, and ran off the page (square-flute, 2026-10-13). */
+img{max-width:100%;height:auto}
+a{color:var(--accent)}
+code{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+background:var(--codebg);padding:.1em .32em;border-radius:4px;
+border:1px solid color-mix(in srgb,var(--line) 70%,transparent)}
+pre{background:var(--codebg);border:1px solid var(--line);border-radius:9px;
+padding:14px 16px;overflow-x:auto;margin:1.1em 0}
+pre code{background:none;border:0;padding:0;font-size:12.8px;line-height:1.62;white-space:pre}
+blockquote{margin:1.15em 0;padding:.7em 1.1em;border-left:4px solid var(--accent);
+background:var(--codebg);border-radius:0 7px 7px 0}
+blockquote p{margin:0}
+.tw{overflow-x:auto;margin:1.15em 0;border:1px solid var(--line);border-radius:9px;
+background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:8px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+/* honour align="center" on gallery cells: a presentation attribute loses to any
+   CSS rule, so the line above would silently left-align every thumbnail caption */
+td[align=center],th[align=center]{text-align:center}
+th{background:var(--thbg);font-weight:630;white-space:nowrap;font-size:13px;
+letter-spacing:.01em}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:color-mix(in srgb,var(--thbg) 45%,transparent)}
+td code,th code{white-space:nowrap}
+/* A walk inside a link is one token: breaking it mid-walk put "N" at the end of one
+   line and "N5 U" at the start of the next, which reads as two things. */
+a code{white-space:nowrap}
+.tog{position:fixed;top:14px;right:14px;z-index:9;background:var(--card);color:var(--mut);
+border:1px solid var(--line);border-radius:7px;padding:6px 11px;font-size:12.5px;cursor:pointer}
+.tog:hover{color:var(--accent)}
+/* Below 900px the contents list moves to the top of the page, and the fixed theme
+   button sat on top of its first lines. There it scrolls away with the page instead,
+   in a strip of padding kept free for it; fixed, it would ride over the text as the
+   page scrolls, since a narrow screen has no margin for it to sit in. */
+@media (max-width:900px){.wrap{grid-template-columns:1fr;gap:20px;padding:62px 18px 72px}
+.tog{position:absolute}
+nav{position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line);
+padding:0 0 16px;columns:2;column-gap:20px}}
+@media print{nav,.tog{display:none}.wrap{display:block;max-width:none;padding:0}
+pre,.tw{break-inside:avoid}h1{break-after:avoid}}
+</style>
+</head>
+<body>
+<button class="tog" type="button">theme</button>
+<div class="wrap">
+<nav><b>Contents</b><a class="l1" href="#octagonal-flute">Octagonal flute</a><a class="l2" href="#the-flute">The flute</a><a class="l2" href="#the-embouchure">The embouchure</a><a class="l2" href="#turn-it-in-3d">Turn it in 3D</a><a class="l2" href="#the-holes">The holes</a><a class="l2" href="#fingering">Fingering</a><a class="l2" href="#what-the-model-says">What the model says</a><a class="l2" href="#before-you-cut">Before you cut</a><a class="l2" href="#building-it">Building it</a><a class="l2" href="#regenerating-it">Regenerating it</a><a class="l2" href="#files">Files</a></nav>
+<main>
+<h1 id="octagonal-flute">Octagonal flute</h1>
+<p><strong><a href="https://github.com/Gernreich/octagonal-flute">Read the README</a></strong></p>
+<p>A six-hole transverse flute in D, the size and fingering of an Irish or simple-system wooden flute, built in 3mm plywood as a long octagonal tube: eight strips, each the length of the flute, finger-jointed to their neighbours down every edge. You blow across an embouchure hole near the closed head end, as on any side-blown flute. All holes closed, it sounds D4; opening them from the foot up gives the D major scale to C♯5, and overblowing gives the octave above.</p>
+<p>Output is millimetre-true — <code>1 user unit = 1mm</code> with a physical <code>width</code>/<code>height</code> — so it prints and cuts at real size.</p>
+<p><strong>It has not been cut or played yet.</strong> The bore and the holes come from an acoustic model whose embouchure term is not measured, so the foot is cut long, to be trimmed to pitch. <a href="#before-you-cut">Before you cut</a> says what that means for the first one.</p>
+<table>
+<tr>
+<td align="center"><a href="cut-files/octagonal-flute-D4-sheet1-cut-files.svg"><img src="previews/octagonal-flute-D4-sheet1-cut-files.svg" alt="One sheet of parts: eight long thin strips with small square fingers notched along both edges, the top one with a rounded slot for the embouchure near one end, six finger holes along its middle, some round and some longer than wide, and two short blue lines across it, one near each end; below them a rounded plate with the same slot through it, and three small octagons" width="100%"></a></td>
+</tr>
+<tr>
+<td align="center"><sub>the whole flute on one 582 × 152mm sheet</sub></td>
+</tr>
+</table>
+
+<p>Built for <strong><a href="https://www.youtube.com/@LaserMadeMusic">LaserMadeMusic</a></strong>.</p>
+<p><strong><a href="https://gernreich.github.io/">The rest of the build files</a></strong> — every instrument, generator and tool, indexed.</p>
+<p><strong><a href="https://github.com/Gernreich/octagonal-flute/archive/refs/heads/main.zip">Download everything as a ZIP</a></strong></p>
+<h2 id="the-flute">The flute</h2>
+<div class="tw">
+<table>
+<tbody>
+<tr>
+<td>Key</td>
+<td>D: D4 with every hole closed, six holes, the D major scale</td>
+</tr>
+<tr>
+<td>Bore</td>
+<td>a regular octagon 19mm across its flats inside, 299mm², the area of a 19.5mm round bore</td>
+</tr>
+<tr>
+<td>Outside</td>
+<td>25mm across the flats; each wall 10.36mm wide outside, 7.87mm inside</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>571.9mm as cut, 546.9mm once trimmed to the model's foot</td>
+</tr>
+<tr>
+<td>Parts</td>
+<td>12 on one sheet: eight walls, the lip plate and three cork discs</td>
+</tr>
+<tr>
+<td>Joints</td>
+<td>the walls press-fit; the lip plate glued; the cork press-fit, so it can move</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>From the head end:</p>
+<ul>
+<li><strong>The head</strong>: 6mm of bare tube past the cork.</li>
+<li><strong>The cork</strong>: three octagonal discs, 9mm in all, pressed into the bore with their face 20mm from the embouchure's centre. They are drawn 0.12mm over the bore's size across the flats, the square flute's press-fit for its plug discs.</li>
+<li><strong>The embouchure</strong>, 35mm from the head end: a slot with round ends, 7mm across and 12mm along the flute, through the top wall and the lip plate glued over it.</li>
+<li><strong>The six holes</strong>, on the top wall's centre line, three for each hand.</li>
+<li><strong>The foot</strong>: open, cut 25mm longer than the model asks for.</li>
+</ul>
+<p>The walls are the four-hole ocarinas' joint at 135°. Each edge is split into cells about 6mm long, which alternate between the two walls. In its own cells a wall runs out to the edge line; in its neighbour's it stops 2.12mm short, which is 3mm × sin 135°, the least that keeps its 3mm of ply out of the neighbour's. So every joint closes on a line, and a small V shows outside along each seam, which the shellac fills. Where both neighbours own the cells, a wall keeps 6.11mm of its 10.36mm width.</p>
+<p><strong>The top wall keeps its whole width beside every opening.</strong> It owns every cell of both its edges for 3mm either side of the embouchure and each hole, so no hole sits next to a joint.</p>
+<h2 id="the-embouchure">The embouchure</h2>
+<p>A side-blown flute speaks when a flat jet of breath, aimed across the embouchure hole, strikes the hole's far edge and flips in and out with the air in the tube. Three things shape how it plays, and in a flat wall of plywood each needs a decision.</p>
+<p><strong>Its depth.</strong> The hole's walls, the chimney, set how much air moves in the hole with the jet, and so the tone: a shallow chimney is bright and easy, like a fife's; a deep one is dark and resistant. A wooden flute's chimney is the thickness of its wall, several millimetres. 3mm of ply alone would be nearer a fife's, so a <strong>lip plate</strong>, a second ply, is glued over the top wall with the same slot through it: a 6mm chimney.</p>
+<p><strong>Its size and shape.</strong> An Irish flute's embouchure is an oval about 10 to 11mm across and 12 to 13mm along the flute. Here the hole cannot be wider than the top wall's inside, 7.87mm, or it would open into the joints, so it is 7mm across and stretched to 12mm along the flute. That is about 70% of an Irish flute's area: it should speak easily and play a little quieter.</p>
+<p><strong>Its edges.</strong> The far edge, the one the breath strikes, wants to be crisp, and the hole's walls want an undercut, a little wider inside than out. A laser cuts square, so <strong>file both by hand before the lip plate goes on</strong>, while the two plies can still be worked from both faces. Keep the far edge sharp where it meets the lip plate's top face, and round over the near edge, where the lower lip rests, a little.</p>
+<p>The lip plate is 26 × 40mm, its corners rounded, wider than the 10.36mm top wall it sits on, so the lower lip has something flat to rest on and roll the flute against. The faces either side of the top fall away at 45° beneath it.</p>
+<h2 id="turn-it-in-3d">Turn it in 3D</h2>
+<div id="turn3d"></div><script src="viewer.js"></script>
+
+<h2 id="the-holes">The holes</h2>
+<figure><svg aria-label="The top wall from outside, to scale, head end on the left, cut off past the lowest hole: its edges notched for fingers except beside each opening, the lip plate&#x27;s outline dashed round the embouchure, the six holes labelled L1 7 × 11.0, L2 7 × 9.2, L3 ø6.8, R1 ø5.6, R2 7 × 11.0 and R3 ø5.5, and the blue cork line near the head" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 471 50">
+<title>The top wall from outside, to scale</title>
+<desc>Display drawing, not a cut file. The top wall from outside, to scale, head end on the left, cut off 20mm past the lowest hole: its edges cut into fingers, left whole beside every opening; the bore's inside edges dotted beneath; the lip plate's outline dashed round the embouchure; the six finger holes named for their fingers with their sizes, round or longer along the flute; and the blue line where the cork's face goes.</desc>
+<rect x="0" y="0" width="471.0" height="50.0" fill="#ffffff"/>
+<clipPath id="c"><rect x="0" y="0" width="465.0" height="50.0"/></clipPath>
+<g clip-path="url(#c)"><path d="M 577.91,19.82 L 571.82,19.82 L 571.82,21.94 L 565.74,21.94 L 565.74,19.82 L 559.66,19.82 L 559.66,21.94 L 553.57,21.94 L 553.57,19.82 L 547.49,19.82 L 547.49,21.94 L 541.40,21.94 L 541.40,19.82 L 535.32,19.82 L 535.32,21.94 L 529.24,21.94 L 529.24,19.82 L 523.15,19.82 L 523.15,21.94 L 517.07,21.94 L 517.07,19.82 L 510.98,19.82 L 510.98,21.94 L 504.90,21.94 L 504.90,19.82 L 498.81,19.82 L 498.81,21.94 L 492.73,21.94 L 492.73,19.82 L 486.65,19.82 L 486.65,21.94 L 480.56,21.94 L 480.56,19.82 L 474.48,19.82 L 474.48,21.94 L 468.39,21.94 L 468.39,19.82 L 462.31,19.82 L 462.31,21.94 L 456.23,21.94 L 456.23,19.82 L 437.97,19.82 L 437.97,21.94 L 431.89,21.94 L 431.89,19.82 L 425.80,19.82 L 425.80,21.94 L 419.72,21.94 L 419.72,19.82 L 401.47,19.82 L 401.47,21.94 L 395.38,21.94 L 395.38,19.82 L 389.30,19.82 L 389.30,21.94 L 383.22,21.94 L 383.22,19.82 L 364.96,19.82 L 364.96,21.94 L 358.88,21.94 L 358.88,19.82 L 352.80,19.82 L 352.80,21.94 L 346.71,21.94 L 346.71,19.82 L 340.63,19.82 L 340.63,21.94 L 334.54,21.94 L 334.54,19.82 L 316.29,19.82 L 316.29,21.94 L 310.21,21.94 L 310.21,19.82 L 279.79,19.82 L 279.79,21.94 L 273.70,21.94 L 273.70,19.82 L 243.28,19.82 L 243.28,21.94 L 237.20,21.94 L 237.20,19.82 L 231.11,19.82 L 231.11,21.94 L 225.03,21.94 L 225.03,19.82 L 218.94,19.82 L 218.94,21.94 L 212.86,21.94 L 212.86,19.82 L 206.78,19.82 L 206.78,21.94 L 200.69,21.94 L 200.69,19.82 L 194.61,19.82 L 194.61,21.94 L 188.52,21.94 L 188.52,19.82 L 182.44,19.82 L 182.44,21.94 L 176.36,21.94 L 176.36,19.82 L 170.27,19.82 L 170.27,21.94 L 164.19,21.94 L 164.19,19.82 L 158.10,19.82 L 158.10,21.94 L 152.02,21.94 L 152.02,19.82 L 145.93,19.82 L 145.93,21.94 L 139.85,21.94 L 139.85,19.82 L 133.77,19.82 L 133.77,21.94 L 127.68,21.94 L 127.68,19.82 L 121.60,19.82 L 121.60,21.94 L 115.51,21.94 L 115.51,19.82 L 109.43,19.82 L 109.43,21.94 L 103.35,21.94 L 103.35,19.82 L 97.26,19.82 L 97.26,21.94 L 91.18,21.94 L 91.18,19.82 L 85.09,19.82 L 85.09,21.94 L 79.01,21.94 L 79.01,19.82 L 72.93,19.82 L 72.93,21.94 L 66.84,21.94 L 66.84,19.82 L 60.76,19.82 L 60.76,21.94 L 54.67,21.94 L 54.67,19.82 L 24.25,19.82 L 24.25,21.94 L 18.17,21.94 L 18.17,19.82 L 12.08,19.82 L 12.08,21.94 L 6.00,21.94 L 6.00,30.18 L 12.08,30.18 L 12.08,28.06 L 18.17,28.06 L 18.17,30.18 L 24.25,30.18 L 24.25,28.06 L 30.34,28.06 L 30.34,30.18 L 60.76,30.18 L 60.76,28.06 L 66.84,28.06 L 66.84,30.18 L 72.93,30.18 L 72.93,28.06 L 79.01,28.06 L 79.01,30.18 L 85.09,30.18 L 85.09,28.06 L 91.18,28.06 L 91.18,30.18 L 97.26,30.18 L 97.26,28.06 L 103.35,28.06 L 103.35,30.18 L 109.43,30.18 L 109.43,28.06 L 115.51,28.06 L 115.51,30.18 L 121.60,30.18 L 121.60,28.06 L 127.68,28.06 L 127.68,30.18 L 133.77,30.18 L 133.77,28.06 L 139.85,28.06 L 139.85,30.18 L 145.93,30.18 L 145.93,28.06 L 152.02,28.06 L 152.02,30.18 L 158.10,30.18 L 158.10,28.06 L 164.19,28.06 L 164.19,30.18 L 170.27,30.18 L 170.27,28.06 L 176.36,28.06 L 176.36,30.18 L 182.44,30.18 L 182.44,28.06 L 188.52,28.06 L 188.52,30.18 L 194.61,30.18 L 194.61,28.06 L 200.69,28.06 L 200.69,30.18 L 206.78,30.18 L 206.78,28.06 L 212.86,28.06 L 212.86,30.18 L 218.94,30.18 L 218.94,28.06 L 225.03,28.06 L 225.03,30.18 L 231.11,30.18 L 231.11,28.06 L 237.20,28.06 L 237.20,30.18 L 243.28,30.18 L 243.28,28.06 L 249.37,28.06 L 249.37,30.18 L 279.79,30.18 L 279.79,28.06 L 285.87,28.06 L 285.87,30.18 L 304.12,30.18 L 304.12,28.06 L 310.21,28.06 L 310.21,30.18 L 340.63,30.18 L 340.63,28.06 L 346.71,28.06 L 346.71,30.18 L 352.80,30.18 L 352.80,28.06 L 358.88,28.06 L 358.88,30.18 L 364.96,30.18 L 364.96,28.06 L 371.05,28.06 L 371.05,30.18 L 389.30,30.18 L 389.30,28.06 L 395.38,28.06 L 395.38,30.18 L 425.80,30.18 L 425.80,28.06 L 431.89,28.06 L 431.89,30.18 L 462.31,30.18 L 462.31,28.06 L 468.39,28.06 L 468.39,30.18 L 474.48,30.18 L 474.48,28.06 L 480.56,28.06 L 480.56,30.18 L 486.65,30.18 L 486.65,28.06 L 492.73,28.06 L 492.73,30.18 L 498.81,30.18 L 498.81,28.06 L 504.90,28.06 L 504.90,30.18 L 510.98,30.18 L 510.98,28.06 L 517.07,28.06 L 517.07,30.18 L 523.15,30.18 L 523.15,28.06 L 529.24,28.06 L 529.24,30.18 L 535.32,30.18 L 535.32,28.06 L 541.40,28.06 L 541.40,30.18 L 547.49,30.18 L 547.49,28.06 L 553.57,28.06 L 553.57,30.18 L 559.66,30.18 L 559.66,28.06 L 565.74,28.06 L 565.74,30.18 L 571.82,30.18 L 571.82,28.06 L 577.91,28.06 Z" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/></g>
+<path d="M 6.00,21.06 H 465.04 M 6.00,28.94 H 465.04" fill="none" stroke="#8a7350" stroke-width=".5" stroke-dasharray="1 1"/>
+<path d="M 61.00,29.00 L 60.96,29.88 L 60.83,30.76 L 60.61,31.61 L 60.31,32.44 L 59.94,33.24 L 59.48,34.00 L 58.96,34.71 L 58.36,35.36 L 57.71,35.96 L 57.00,36.48 L 56.24,36.94 L 55.44,37.31 L 54.61,37.61 L 53.76,37.83 L 52.88,37.96 L 52.00,38.00 L 30.00,38.00 L 29.12,37.96 L 28.24,37.83 L 27.39,37.61 L 26.56,37.31 L 25.76,36.94 L 25.00,36.48 L 24.29,35.96 L 23.64,35.36 L 23.04,34.71 L 22.52,34.00 L 22.06,33.24 L 21.69,32.44 L 21.39,31.61 L 21.17,30.76 L 21.04,29.88 L 21.00,29.00 L 21.00,21.00 L 21.04,20.12 L 21.17,19.24 L 21.39,18.39 L 21.69,17.56 L 22.06,16.76 L 22.52,16.00 L 23.04,15.29 L 23.64,14.64 L 24.29,14.04 L 25.00,13.52 L 25.76,13.06 L 26.56,12.69 L 27.39,12.39 L 28.24,12.17 L 29.12,12.04 L 30.00,12.00 L 52.00,12.00 L 52.88,12.04 L 53.76,12.17 L 54.61,12.39 L 55.44,12.69 L 56.24,13.06 L 57.00,13.52 L 57.71,14.04 L 58.36,14.64 L 58.96,15.29 L 59.48,16.00 L 59.94,16.76 L 60.31,17.56 L 60.61,18.39 L 60.83,19.24 L 60.96,20.12 L 61.00,21.00 Z" fill="none" stroke="#1d232b" stroke-width=".5" stroke-dasharray="2 1.5"/>
+<path d="M 43.50,21.50 L 43.84,21.52 L 44.18,21.57 L 44.52,21.65 L 44.84,21.77 L 45.15,21.91 L 45.44,22.09 L 45.72,22.29 L 45.97,22.53 L 46.21,22.78 L 46.41,23.06 L 46.59,23.35 L 46.73,23.66 L 46.85,23.98 L 46.93,24.32 L 46.98,24.66 L 47.00,25.00 L 46.98,25.34 L 46.93,25.68 L 46.85,26.02 L 46.73,26.34 L 46.59,26.65 L 46.41,26.94 L 46.21,27.22 L 45.97,27.47 L 45.72,27.71 L 45.44,27.91 L 45.15,28.09 L 44.84,28.23 L 44.52,28.35 L 44.18,28.43 L 43.84,28.48 L 43.50,28.50 L 38.50,28.50 L 38.16,28.48 L 37.82,28.43 L 37.48,28.35 L 37.16,28.23 L 36.85,28.09 L 36.56,27.91 L 36.28,27.71 L 36.03,27.47 L 35.79,27.22 L 35.59,26.94 L 35.41,26.65 L 35.27,26.34 L 35.15,26.02 L 35.07,25.68 L 35.02,25.34 L 35.00,25.00 L 35.02,24.66 L 35.07,24.32 L 35.15,23.98 L 35.27,23.66 L 35.41,23.35 L 35.59,23.06 L 35.79,22.78 L 36.03,22.53 L 36.28,22.29 L 36.56,22.09 L 36.85,21.91 L 37.16,21.77 L 37.48,21.65 L 37.82,21.57 L 38.16,21.52 L 38.50,21.50 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 445.04,22.24 L 445.31,22.25 L 445.58,22.29 L 445.84,22.36 L 446.10,22.45 L 446.34,22.56 L 446.57,22.70 L 446.79,22.86 L 446.99,23.05 L 447.17,23.25 L 447.34,23.47 L 447.47,23.70 L 447.59,23.94 L 447.68,24.20 L 447.75,24.46 L 447.79,24.73 L 447.80,25.00 L 447.79,25.27 L 447.75,25.54 L 447.68,25.80 L 447.59,26.06 L 447.47,26.30 L 447.34,26.53 L 447.17,26.75 L 446.99,26.95 L 446.79,27.14 L 446.57,27.30 L 446.34,27.44 L 446.10,27.55 L 445.84,27.64 L 445.58,27.71 L 445.31,27.75 L 445.04,27.76 L 444.77,27.75 L 444.50,27.71 L 444.24,27.64 L 443.98,27.55 L 443.74,27.44 L 443.50,27.30 L 443.29,27.14 L 443.09,26.95 L 442.90,26.75 L 442.74,26.53 L 442.60,26.30 L 442.49,26.06 L 442.40,25.80 L 442.33,25.54 L 442.29,25.27 L 442.28,25.00 L 442.29,24.73 L 442.33,24.46 L 442.40,24.20 L 442.49,23.94 L 442.60,23.70 L 442.74,23.47 L 442.90,23.25 L 443.09,23.05 L 443.29,22.86 L 443.50,22.70 L 443.74,22.56 L 443.98,22.45 L 444.24,22.36 L 444.50,22.29 L 444.77,22.25 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 413.04,21.50 L 413.38,21.52 L 413.72,21.57 L 414.05,21.65 L 414.38,21.77 L 414.69,21.91 L 414.98,22.09 L 415.26,22.29 L 415.51,22.53 L 415.74,22.78 L 415.95,23.06 L 416.13,23.35 L 416.27,23.66 L 416.39,23.98 L 416.47,24.32 L 416.52,24.66 L 416.54,25.00 L 416.52,25.34 L 416.47,25.68 L 416.39,26.02 L 416.27,26.34 L 416.13,26.65 L 415.95,26.94 L 415.74,27.22 L 415.51,27.47 L 415.26,27.71 L 414.98,27.91 L 414.69,28.09 L 414.38,28.23 L 414.05,28.35 L 413.72,28.43 L 413.38,28.48 L 413.04,28.50 L 409.04,28.50 L 408.70,28.48 L 408.36,28.43 L 408.02,28.35 L 407.70,28.23 L 407.39,28.09 L 407.09,27.91 L 406.82,27.71 L 406.56,27.47 L 406.33,27.22 L 406.13,26.94 L 405.95,26.65 L 405.81,26.34 L 405.69,26.02 L 405.61,25.68 L 405.56,25.34 L 405.54,25.00 L 405.56,24.66 L 405.61,24.32 L 405.69,23.98 L 405.81,23.66 L 405.95,23.35 L 406.13,23.06 L 406.33,22.78 L 406.56,22.53 L 406.82,22.29 L 407.09,22.09 L 407.39,21.91 L 407.70,21.77 L 408.02,21.65 L 408.36,21.57 L 408.70,21.52 L 409.04,21.50 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 377.04,22.18 L 377.32,22.19 L 377.59,22.23 L 377.86,22.30 L 378.12,22.39 L 378.37,22.51 L 378.61,22.65 L 378.83,22.82 L 379.03,23.01 L 379.22,23.21 L 379.38,23.43 L 379.53,23.67 L 379.65,23.92 L 379.74,24.18 L 379.81,24.45 L 379.85,24.72 L 379.86,25.00 L 379.85,25.28 L 379.81,25.55 L 379.74,25.82 L 379.65,26.08 L 379.53,26.33 L 379.38,26.57 L 379.22,26.79 L 379.03,26.99 L 378.83,27.18 L 378.61,27.35 L 378.37,27.49 L 378.12,27.61 L 377.86,27.70 L 377.59,27.77 L 377.32,27.81 L 377.04,27.82 L 376.76,27.81 L 376.49,27.77 L 376.22,27.70 L 375.96,27.61 L 375.71,27.49 L 375.47,27.35 L 375.25,27.18 L 375.04,26.99 L 374.86,26.79 L 374.69,26.57 L 374.55,26.33 L 374.43,26.08 L 374.34,25.82 L 374.27,25.55 L 374.23,25.28 L 374.22,25.00 L 374.23,24.72 L 374.27,24.45 L 374.34,24.18 L 374.43,23.92 L 374.55,23.67 L 374.69,23.43 L 374.86,23.21 L 375.04,23.01 L 375.25,22.82 L 375.47,22.65 L 375.71,22.51 L 375.96,22.39 L 376.22,22.30 L 376.49,22.23 L 376.76,22.19 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 327.79,21.62 L 328.12,21.64 L 328.45,21.68 L 328.77,21.76 L 329.09,21.88 L 329.39,22.02 L 329.67,22.19 L 329.94,22.39 L 330.18,22.61 L 330.41,22.86 L 330.60,23.12 L 330.77,23.41 L 330.92,23.71 L 331.03,24.02 L 331.11,24.34 L 331.16,24.67 L 331.17,25.00 L 331.16,25.33 L 331.11,25.66 L 331.03,25.98 L 330.92,26.29 L 330.77,26.59 L 330.60,26.88 L 330.41,27.14 L 330.18,27.39 L 329.94,27.61 L 329.67,27.81 L 329.39,27.98 L 329.09,28.12 L 328.77,28.24 L 328.45,28.32 L 328.12,28.36 L 327.79,28.38 L 327.46,28.36 L 327.13,28.32 L 326.81,28.24 L 326.50,28.12 L 326.20,27.98 L 325.91,27.81 L 325.65,27.61 L 325.40,27.39 L 325.18,27.14 L 324.98,26.88 L 324.81,26.59 L 324.67,26.29 L 324.56,25.98 L 324.48,25.66 L 324.43,25.33 L 324.41,25.00 L 324.43,24.67 L 324.48,24.34 L 324.56,24.02 L 324.67,23.71 L 324.81,23.41 L 324.98,23.12 L 325.18,22.86 L 325.40,22.61 L 325.65,22.39 L 325.91,22.19 L 326.20,22.02 L 326.50,21.88 L 326.81,21.76 L 327.13,21.68 L 327.46,21.64 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 294.90,21.50 L 295.25,21.52 L 295.59,21.57 L 295.92,21.65 L 296.24,21.77 L 296.55,21.91 L 296.85,22.09 L 297.12,22.29 L 297.38,22.53 L 297.61,22.78 L 297.81,23.06 L 297.99,23.35 L 298.14,23.66 L 298.25,23.98 L 298.34,24.32 L 298.39,24.66 L 298.40,25.00 L 298.39,25.34 L 298.34,25.68 L 298.25,26.02 L 298.14,26.34 L 297.99,26.65 L 297.81,26.94 L 297.61,27.22 L 297.38,27.47 L 297.12,27.71 L 296.85,27.91 L 296.55,28.09 L 296.24,28.23 L 295.92,28.35 L 295.59,28.43 L 295.25,28.48 L 294.90,28.50 L 292.68,28.50 L 292.34,28.48 L 292.00,28.43 L 291.66,28.35 L 291.34,28.23 L 291.03,28.09 L 290.74,27.91 L 290.46,27.71 L 290.21,27.47 L 289.97,27.22 L 289.77,26.94 L 289.59,26.65 L 289.45,26.34 L 289.33,26.02 L 289.25,25.68 L 289.20,25.34 L 289.18,25.00 L 289.20,24.66 L 289.25,24.32 L 289.33,23.98 L 289.45,23.66 L 289.59,23.35 L 289.77,23.06 L 289.97,22.78 L 290.21,22.53 L 290.46,22.29 L 290.74,22.09 L 291.03,21.91 L 291.34,21.77 L 291.66,21.65 L 292.00,21.57 L 292.34,21.52 L 292.68,21.50 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 261.79,21.50 L 262.14,21.52 L 262.47,21.57 L 262.81,21.65 L 263.13,21.77 L 263.44,21.91 L 263.74,22.09 L 264.01,22.29 L 264.27,22.53 L 264.50,22.78 L 264.70,23.06 L 264.88,23.35 L 265.03,23.66 L 265.14,23.98 L 265.22,24.32 L 265.28,24.66 L 265.29,25.00 L 265.28,25.34 L 265.22,25.68 L 265.14,26.02 L 265.03,26.34 L 264.88,26.65 L 264.70,26.94 L 264.50,27.22 L 264.27,27.47 L 264.01,27.71 L 263.74,27.91 L 263.44,28.09 L 263.13,28.23 L 262.81,28.35 L 262.47,28.43 L 262.14,28.48 L 261.79,28.50 L 257.79,28.50 L 257.45,28.48 L 257.11,28.43 L 256.78,28.35 L 256.45,28.23 L 256.14,28.09 L 255.85,27.91 L 255.57,27.71 L 255.32,27.47 L 255.09,27.22 L 254.88,26.94 L 254.71,26.65 L 254.56,26.34 L 254.44,26.02 L 254.36,25.68 L 254.31,25.34 L 254.29,25.00 L 254.31,24.66 L 254.36,24.32 L 254.44,23.98 L 254.56,23.66 L 254.71,23.35 L 254.88,23.06 L 255.09,22.78 L 255.32,22.53 L 255.57,22.29 L 255.85,22.09 L 256.14,21.91 L 256.45,21.77 L 256.78,21.65 L 257.11,21.57 L 257.45,21.52 L 257.79,21.50 Z" fill="#ffffff" stroke="#a85800" stroke-width=".6"/>
+<path d="M 21.00,21.50 L 21.00,28.50" fill="none" stroke="#0000ff" stroke-width=".6"/>
+<text x="41.00" y="44.00" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">embouchure 7 × 12</text>
+<text x="21.00" y="10.00" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">cork</text>
+<text x="445.04" y="35.44" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">R3 ø5.5</text>
+<text x="411.04" y="18.06" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">R2 7 × 11.0</text>
+<text x="377.04" y="35.44" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">R1 ø5.6</text>
+<text x="327.79" y="18.06" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">L3 ø6.8</text>
+<text x="293.79" y="35.44" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">L2 7 × 9.2</text>
+<text x="259.79" y="18.06" font-family="Helvetica, Arial, sans-serif" font-size="4" fill="#1d232b" text-anchor="middle">L1 7 × 11.0</text>
+</svg></figure>
+<div class="tw">
+<table>
+<thead>
+<tr>
+<th>Hole</th>
+<th>Finger</th>
+<th>From the embouchure's centre</th>
+<th>From the head end</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>L1</code></td>
+<td>left index</td>
+<td>218.8mm</td>
+<td>253.8mm</td>
+<td>7 × 11.0mm slot</td>
+</tr>
+<tr>
+<td><code>L2</code></td>
+<td>left middle</td>
+<td>252.8mm</td>
+<td>287.8mm</td>
+<td>7 × 9.2mm slot</td>
+</tr>
+<tr>
+<td><code>L3</code></td>
+<td>left ring</td>
+<td>286.8mm</td>
+<td>321.8mm</td>
+<td>ø6.8mm</td>
+</tr>
+<tr>
+<td><code>R1</code></td>
+<td>right index</td>
+<td>336.0mm</td>
+<td>371.0mm</td>
+<td>ø5.6mm</td>
+</tr>
+<tr>
+<td><code>R2</code></td>
+<td>right middle</td>
+<td>370.0mm</td>
+<td>405.0mm</td>
+<td>7 × 11.0mm slot</td>
+</tr>
+<tr>
+<td><code>R3</code></td>
+<td>right ring</td>
+<td>404.0mm</td>
+<td>439.0mm</td>
+<td>ø5.5mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Each hand's holes are 34mm apart, and the hands 49.2mm.</strong> Left to themselves, at one size each, the holes would fall where their notes put them: at 7mm round, 56, 17, 55, 42 and 37mm apart, the lower hand's first gap far too wide for a hand. A smaller hole has to sit nearer the embouchure to play the same note, which is what lets the holes close up. So in each hand one hole is as big as the wall allows, and its place is solved; the hand's other two stand 34mm from it and their sizes are solved. The big ones are <code>R2</code>, the lower hand's middle, and <code>L1</code>, the upper hand's top, the two that leave their neighbours room to be smaller.</p>
+<p><strong>A hole wider than the wall's inside is a slot.</strong> No hole can be wider than 7mm, since the wall is only 7.87mm wide inside. Above that the hole grows along the flute instead, 7mm across and up to 12mm long, which a finger pad covers easily; the model reads a slot as the round hole of its area. The two big holes are cut 11mm long, 1mm short of that, so even they can be filed longer.</p>
+<p><code>R3</code>, the E hole, comes out small, 5.5mm, to sit within reach. Small holes play a little veiled, so E may be the weakest note.</p>
+<h2 id="fingering">Fingering</h2>
+<figure><svg aria-label="Fingering chart: eight columns of six holes, D4, E4, F♯4, G4, A4, B4, C♯5 and D5, the holes uncovered one at a time from the bottom up, and D5 with every hole covered but the top" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 176 78">
+<title>Fingering chart, D4 to D5</title>
+<desc>Display drawing. The D major scale from D4 to D5, one column per note: the six holes with the head end up, the left hand's three above the right's. Black is covered, white is open. D5 is the second octave, overblown, with the top hole open.</desc>
+<rect x="0" y="0" width="176" height="78" fill="#ffffff"/>
+<rect x="6.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="26.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="38.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="46.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="11.0" cy="54.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<text x="11.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">D4</text>
+<rect x="28.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="26.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="38.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="46.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="33.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="33.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">E4</text>
+<rect x="50.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="26.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="38.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="46.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="55.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="55.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">F♯4</text>
+<rect x="72.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="26.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="38.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="46.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="77.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="77.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">G4</text>
+<rect x="94.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="26.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="38.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="46.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="99.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="99.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">A4</text>
+<rect x="116.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="10.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="18.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="26.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="38.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="46.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="121.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="121.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">B4</text>
+<rect x="138.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="10.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="18.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="26.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="38.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="46.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="143.0" cy="54.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<text x="143.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">C♯5</text>
+<rect x="160.0" y="3" width="10" height="62" rx="2" fill="#e7dcc4" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="10.0" r="2.6" fill="#ffffff" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="18.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="26.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="38.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="46.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<circle cx="165.0" cy="54.0" r="2.6" fill="#1d232b" stroke="#1d232b" stroke-width=".4"/>
+<text x="165.0" y="74.0" font-size="6" fill="#1d232b" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">D5</text>
+</svg></figure>
+<p>The scale is the six-hole flute's. Black is covered. Lift the fingers from the foot up: all covered for D4, then <code>R3</code> open for E4, <code>R2</code> for F♯4, <code>R1</code> for G4, <code>L3</code> for A4, <code>L2</code> for B4 and <code>L1</code> for C♯5. Blow a little harder, with the lips a little closer, and the same fingerings sound the octave above; D5 is usually fingered with <code>L1</code> open. C natural is a cross fingering, as on any six-hole flute; the model does not work it out.</p>
+<h2 id="what-the-model-says">What the model says</h2>
+<pre class="sh"><code>python3 flute_model.py</code></pre>
+<div class="tw">
+<table>
+<thead>
+<tr>
+<th>Note</th>
+<th>Hz</th>
+<th>Off the scale, cents</th>
+<th>Its octave, cents off 2:1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D4</td>
+<td>293.66</td>
+<td>0.0</td>
+<td>+7.4</td>
+</tr>
+<tr>
+<td>E4</td>
+<td>329.63</td>
+<td>0.0</td>
+<td>−17.4</td>
+</tr>
+<tr>
+<td>F♯4</td>
+<td>369.99</td>
+<td>0.0</td>
+<td>−9.3</td>
+</tr>
+<tr>
+<td>G4</td>
+<td>392.00</td>
+<td>0.0</td>
+<td>−9.7</td>
+</tr>
+<tr>
+<td>A4</td>
+<td>440.00</td>
+<td>0.0</td>
+<td>−27.8</td>
+</tr>
+<tr>
+<td>B4</td>
+<td>493.88</td>
+<td>0.0</td>
+<td>−29.9</td>
+</tr>
+<tr>
+<td>C♯5</td>
+<td>554.37</td>
+<td>0.0</td>
+<td>+13.1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The model is a transmission-matrix one, the square flute's carried over: the bore a lossy tube; each finger hole a Keefe tone hole in a 3mm wall; the embouchure a short neck into open air, 6mm deep, with the cork's closed stub beside it. Its loss is taken on the bore's hydraulic radius, which for any regular polygon is half its flats, 9.5mm. Air is at 25°C, as breath warms it.</p>
+<p>The first octave lands on the scale because the solver puts it there. The last column is the useful one: it says how far each note's overblown octave lands from a true octave. Up to 30 cents is about what a player corrects with the lips on any simple-system flute. The cork moves it: <code>--cork=17</code> brings the cork 3mm nearer and widens the octaves, and a cork further away narrows them.</p>
+<h2 id="before-you-cut">Before you cut</h2>
+<p><strong>The embouchure's end correction is not measured.</strong> The lip covers part of the hole, by an amount that changes with the player, and the model takes it as a quarter. Every length rests on it: each 0.25 of <code>--mouth</code> moves the foot about 9mm and every hole 7.8 to 8.6mm. So <strong>the foot is cut 25mm long</strong>. As cut, the closed note should sound about 282Hz, D4 72 cents flat; a blue line across the top wall near the foot marks where the model puts the end. With every hole closed, blow the cut flute and read its pitch, measure from the embouchure's centre to the foot, then</p>
+<pre class="sh"><code>python3 flute_model.py --heard=285 --length=537   # the pitch you heard, in Hz, and that length in mm</code></pre>
+<p>prints the <code>--mouth</code> that explains it, and the command to redraw the flute with it. The first flute cut is the measurement.</p>
+<p><strong>Trimming the foot does not tune the holes.</strong> They move with the embouchure term almost as far as the foot does. If the closed note needs the foot trimmed short of the line, the holes will play sharp, and a hole cannot be made smaller. If it needs less trimmed off than the line, they will play flat, and each can be filed longer along the flute, which raises its note. File in small steps.</p>
+<p><strong>Cut it in 3mm Baltic birch plywood</strong>, at a 0.13mm kerf. The fingers are about 6.1mm long, with no play, so the fit comes from the kerf compensation alone. <strong>If your laser's kerf is not 0.13mm, redraw the sheet for its own</strong> with <code>--kerf=</code>: a press-fit that comes out loose wants a wider kerf, one too tight to close a narrower one.</p>
+<p><strong>The walls are 571.9mm long</strong>, and the sheet is 582 × 152mm, so the bed must be at least 582mm long. The generator checks against a 600 × 308mm bed.</p>
+<p>Run the engrave first, then the cuts. <strong>Blue</strong> engraves two lines across the top wall: where the cork's face goes, and the model's foot. Then <strong>orange</strong> cuts the embouchure and the holes, and <strong>black</strong> frees the parts. The top wall is drawn outside face up, so the lines land on the outside.</p>
+<h2 id="building-it">Building it</h2>
+<ol type="1">
+<li>File the embouchure in the top wall and the lip plate as <a href="#the-embouchure">The embouchure</a> describes, then glue the lip plate on, its slot over the top wall's.</li>
+<li>Press the eight walls together into a tube, the top wall up. Any one wall comes off outward along its own face, so they can go together in any order; rubber bands round the tube hold it while you work round. Five of the walls are the same and go anywhere among themselves. The two either side of the top are cut back along one edge, beside the holes, where the top keeps its own: that edge goes against the top, and each fits only on its own side. The 3D view shows them.</li>
+<li>Press the three cork discs in from the head end, one at a time, until the innermost one's face is under the blue line by the embouchure.</li>
+<li>Seal every seam with high-cut shellac, outside and as far inside as a brush on a stick reaches. A flute leaks its tone out of any gap, and most of all near the embouchure.</li>
+<li>With every hole closed, play the closed note and trim the foot toward the line, a millimetre or two at a time, until it sounds D4. Run <code>--heard</code> first, as above, to see how far that is.</li>
+<li>Open each hole in turn, from the foot up, and file it longer along the flute, in small steps, until it plays its note.</li>
+<li>Play the second octave, and move the cork a millimetre at a time to balance it against the first.</li>
+</ol>
+<h2 id="regenerating-it">Regenerating it</h2>
+<pre class="sh"><code>python3 flute_model.py                          # the design and how it plays
+python3 flute_model.py --mouth=1.2              # with a different embouchure correction
+python3 flute_model.py --cork=17                # with the cork elsewhere
+python3 flute_model.py --heard=285 --length=537 # the correction a cut flute implies
+python3 octagonal_flute.py --no-write           # the generator&#39;s checks, writing nothing
+python3 octagonal_flute.py --out=cut-files      # the cut file
+python3 octagonal_flute.py --kerf=0.18 --out=mine   # for a laser with a 0.18mm kerf
+python3 page_assets.py                          # viewer.js, turn.html and the two plans</code></pre>
+<p><code>octagonal_flute.py</code> draws nothing until every check passes:</p>
+<ul>
+<li>the model holds the scale;</li>
+<li>the bore is the octagon the model plays;</li>
+<li>every hole and the embouchure open into the bore;</li>
+<li>the top keeps both its edges beside every opening;</li>
+<li>ply is left between neighbouring openings;</li>
+<li>each hand's holes are in reach;</li>
+<li>a wall keeps ply between its two joints;</li>
+<li>the cork stands where the model puts it;</li>
+<li>the foot is cut long, to trim to pitch;</li>
+<li>the lip plate leaves the lip somewhere to rest;</li>
+<li>the longest part fits the bed;</li>
+<li>every sheet fits the bed;</li>
+<li>every part is on a sheet.</li>
+</ul>
+<p>It imports the square flute's plates, kerf and packer from <code>square_flute.py</code>, and the joint from the four-hole ocarinas' <code>polyhedron.py</code>, so <a href="https://github.com/Gernreich/square-flute">square-flute</a>, <a href="https://github.com/Gernreich/four-hole-ocarinas">four-hole-ocarinas</a> and <a href="https://github.com/Gernreich/swept-curve">swept-curve</a> must be checked out beside this repository.</p>
+<h2 id="files">Files</h2>
+<div class="tw">
+<table>
+<tbody>
+<tr>
+<td><code>cut-files/octagonal-flute-D4-sheet1-cut-files.svg</code></td>
+<td>the flute, every part on one sheet</td>
+</tr>
+<tr>
+<td><code>previews/octagonal-flute-D4-sheet1-cut-files.svg</code></td>
+<td>a display rendering of the sheet — <strong>not</strong> a cut file</td>
+</tr>
+<tr>
+<td><code>plans/octagonal-flute-top-wall.svg</code> · <code>plans/octagonal-flute-fingering.svg</code></td>
+<td>the top wall to scale, and the fingering chart — display drawings, <strong>not</strong> cut files</td>
+</tr>
+<tr>
+<td><code>viewer.js</code></td>
+<td>the 3D view, loaded by the published page</td>
+</tr>
+<tr>
+<td><code>turn.html</code></td>
+<td>the same 3D view on a page of its own, for framing elsewhere</td>
+</tr>
+<tr>
+<td><code>flute_model.py</code></td>
+<td>the acoustic model</td>
+</tr>
+<tr>
+<td><code>octagonal_flute.py</code></td>
+<td>the generator, its checks and the cut file</td>
+</tr>
+<tr>
+<td><code>page_assets.py</code></td>
+<td>builds <code>viewer.js</code>, <code>turn.html</code> and the plans</td>
+</tr>
+<tr>
+<td><code>README.md</code> · <code>index.html</code></td>
+<td>this writeup and its published page; the markdown is the source</td>
+</tr>
+<tr>
+<td><code>.repro</code></td>
+<td>the command that draws each generated file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Released under <a href="LICENSE">CC0 1.0</a>.</p>
+</main>
+</div>
+<script>
+var r=document.documentElement,b=document.querySelector('.tog');
+function set(t){r.setAttribute('data-theme',t);try{localStorage.setItem('ctg-theme',t)}catch(e){}
+b.textContent=t==='dark'?'\u2600 light':'\u263e dark';}
+var saved=null;try{saved=localStorage.getItem('ctg-theme')}catch(e){}
+set(saved||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+b.addEventListener('click',function(){set(r.getAttribute('data-theme')==='dark'?'light':'dark')});
+</script>
+</body>
+</html>
