@@ -207,7 +207,7 @@ laser's kerf is not 0.13mm, redraw the sheet for its own** with `--kerf=`: a pre
 that comes out loose wants a wider kerf, one too tight to close a narrower one.
 
 **The walls are 571.9mm long**, and the sheet is 582 × 152mm, so the bed must be
-at least 582mm long. The generator checks against a 600 × 308mm bed.
+at least 582mm long. The generator checks against a 600 × 305mm bed.
 
 Run the engrave first, then the cuts. **Blue** engraves two lines across the top
 wall: where the cork's face goes, and the model's foot. Then **orange** cuts the
