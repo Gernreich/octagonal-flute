@@ -225,11 +225,12 @@ outside face up, so the lines land on the outside.
    the same and go anywhere among themselves. The two either side of the top are cut
    back along one edge, beside the holes, where the top keeps its own: that edge goes
    against the top, and each fits only on its own side. The 3D view shows them.
-3. Press the three cork discs in from the head end, one at a time, until the
-   innermost one's face is under the blue line by the embouchure.
-4. Seal every seam with high-cut shellac, outside and as far inside as a brush on a
-   stick reaches. A flute leaks its tone out of any gap, and most of all near the
-   embouchure.
+3. Seal every seam with high-cut shellac, outside and as far inside as a brush on a
+   stick reaches, from both ends while they are still open. A flute leaks its tone
+   out of any gap, and most of all near the embouchure.
+4. Once the shellac is dry, press the three cork discs in from the head end, one at
+   a time, until the innermost one's face is under the blue line by the embouchure.
+   Sealing first keeps shellac off the cork, which has to stay free to move.
 5. With every hole closed, play the closed note and run `--heard` with it, as above,
    to see how far the foot is from pitch. Then trim the foot toward the line, a
    millimetre or two at a time, until it sounds D4.
