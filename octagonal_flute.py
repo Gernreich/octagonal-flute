@@ -272,7 +272,7 @@ def checks(parts, info, L, holes, diams, rows, sheets):
          f'{LIP_W:g} x {LIP_L:g}mm on a {FACE_OUT:.1f}mm wall')
     longest = max(max(p.w, p.h) for p in parts)
     note(longest + KERF + 2 * MARGIN <= BED[0], 'the longest part fits the bed',
-         f'{longest:.1f}mm against {BED[0] - 2 * MARGIN:g}')
+         f'{longest + KERF:.1f}mm with the kerf, against {BED[0] - 2 * MARGIN:g}')
     note(all(s['w'] <= BED[0] and s['h'] <= BED[1] for s in sheets), 'every sheet fits the bed',
          f'{len(sheets)} sheet(s), largest {max(s["w"] for s in sheets):.0f} x '
          f'{max(s["h"] for s in sheets):.0f}mm')

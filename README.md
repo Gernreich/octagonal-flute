@@ -191,7 +191,9 @@ python3 flute_model.py --heard=285 --length=537   # the pitch you heard, in Hz, 
 ```
 
 prints the `--mouth` that explains it, and the command to redraw the flute with it.
-The first flute cut is the measurement.
+The first flute cut is the measurement. If it sounds above about 290Hz, the redrawn
+walls are too long for a 600mm bed and the generator refuses them; trim and file this
+one instead, as below.
 
 **Trimming the foot does not tune the holes.** They move with the embouchure term
 almost as far as the foot does. If the closed note needs the foot trimmed short of
@@ -228,9 +230,9 @@ outside face up, so the lines land on the outside.
 4. Seal every seam with high-cut shellac, outside and as far inside as a brush on a
    stick reaches. A flute leaks its tone out of any gap, and most of all near the
    embouchure.
-5. With every hole closed, play the closed note and trim the foot toward the line,
-   a millimetre or two at a time, until it sounds D4. Run `--heard` first, as above,
-   to see how far that is.
+5. With every hole closed, play the closed note and run `--heard` with it, as above,
+   to see how far the foot is from pitch. Then trim the foot toward the line, a
+   millimetre or two at a time, until it sounds D4.
 6. Open each hole in turn, from the foot up, and file it longer along the flute,
    in small steps, until it plays its note.
 7. Play the second octave, and move the cork a millimetre at a time to balance it
