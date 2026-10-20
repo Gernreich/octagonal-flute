@@ -6,7 +6,7 @@
   var style = document.createElement('style');
   style.textContent = "#turn{display:grid;gap:12px;margin:8px 0 24px}\n#turn .vbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px}\n#turn .vbar button:disabled{opacity:.45;cursor:default}\n#turn button{font:500 13px ui-monospace,Menlo,monospace;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:4px;padding:6px 10px;cursor:pointer}\n#turn .vbar button[aria-pressed=\"true\"]{border-color:var(--accent);box-shadow:inset 0 -3px 0 var(--accent)}\n#turn button:focus-visible,#turn input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}\n#turn .stage{position:relative;background:var(--card);border:1px solid var(--line);border-radius:6px;overflow:hidden;touch-action:none}\n#turn canvas{display:block;width:100%;cursor:grab}\n#turn .vinfo{position:absolute;left:12px;bottom:10px;margin:0;font:12px ui-monospace,Menlo,monospace;color:var(--mut);pointer-events:none}\n#turn .vctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;font-size:14px}\n#turn input[type=range]{width:min(260px,60vw);accent-color:var(--accent)}\n#turn .chk{display:inline-flex;gap:6px;align-items:center}\n#turn .note{color:var(--mut);font-size:14px;margin:0}\n#turn .vhow summary{cursor:pointer;width:max-content;max-width:100%}\n#turn .vhow p{margin:6px 0 0}";
   document.head.appendChild(style);
-  mount.innerHTML = "<section class=\"viewer\" id=\"turn\" aria-label=\"Turn it in 3D\">\n  <div class=\"vbar\" role=\"group\" aria-label=\"Build\"><button type=\"button\" data-v=\"octagonal-flute-D4\" aria-pressed=\"true\"><code>octagonal-flute-D4</code></button></div>\n  <div class=\"stage\" id=\"stage\"><canvas id=\"cv\" aria-label=\"The selected build in 3D. Drag to turn, scroll or pinch to zoom.\"></canvas>\n    <p class=\"vinfo\" id=\"vinfo\"></p></div>\n  <div class=\"vctl\">\n    <label for=\"explode\">Explode</label><input id=\"explode\" type=\"range\" min=\"0\" max=\"1\" step=\"0.01\" value=\"0\">\n    <button type=\"button\" id=\"vreset\">Reset view</button>\n    <label class=\"chk\"><input type=\"checkbox\" id=\"xray\"> See through the walls</label>\n  </div>\n  <details class=\"note vhow\"><summary>How to use this view</summary><p>Drag to turn, scroll or pinch to zoom. The parts are the generator's own outlines before the kerf, so this is the flute as built: eight walls finger-jointed down their length, the top one whole beside every hole; the embouchure through the top and the lip plate over it; and the cork, three discs pressed into the head end. Exploded, each wall comes away along its own face, and the cork comes out of the head.</p></details>\n</section>";
+  mount.innerHTML = "<section class=\"viewer\" id=\"turn\" aria-label=\"Turn it in 3D\">\n  <div class=\"vbar\" role=\"group\" aria-label=\"Build\"><button type=\"button\" data-v=\"octagonal-flute-D4\" aria-pressed=\"true\"><code>octagonal-flute-D4</code></button></div>\n  <div class=\"stage\" id=\"stage\"><canvas id=\"cv\" aria-label=\"The selected build in 3D. Drag to turn; right-drag, shift-drag or two fingers to pan; scroll or pinch to zoom; double-click a part to turn round it.\"></canvas>\n    <p class=\"vinfo\" id=\"vinfo\"></p></div>\n  <div class=\"vctl\">\n    <label for=\"explode\">Explode</label><input id=\"explode\" type=\"range\" min=\"0\" max=\"1\" step=\"0.01\" value=\"0\">\n    <button type=\"button\" id=\"vreset\">Reset view</button>\n    <label class=\"chk\"><input type=\"checkbox\" id=\"xray\"> See through the walls</label>\n  </div>\n  <details class=\"note vhow\"><summary>How to use this view</summary><p>Drag to turn; right-drag, shift-drag or move two fingers to slide the view; scroll or pinch to zoom in on whatever is under the pointer; double-click a part to turn round it, and Reset view to go back. The parts are the generator's own outlines before the kerf, so this is the flute as built: eight walls finger-jointed down their length, the top one whole beside every hole; the embouchure through the top and the lip plate over it; and the cork, three discs pressed into the head end. Exploded, each wall comes away along its own face, and the cork comes out of the head.</p></details>\n</section>";
   var s = document.createElement('script');
   s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
   s.onload = run;
@@ -64,11 +64,11 @@
     });
     scene.add(group);
     cur = d;
-    target.set(d.len / 2, 0, d.top / 2);
+    target.set(d.len / 2, 0, d.top / 2); homeT.copy(target);
     document.getElementById('vinfo').textContent = name + ' · ' + d.parts.length + ' parts · ' + d.len.toFixed(0) + 'mm · octagonal bore ' + d.bore;
     place(); render();
   }
-  const target = new THREE.Vector3();
+  const target = new THREE.Vector3(), homeT = new THREE.Vector3();
   let yaw = -0.65, pitch = 0.42, dist = 600;
   const home = { yaw: -0.65, pitch: 0.42, dist: 600 };
   const ex = document.getElementById('explode'), xr = document.getElementById('xray');
@@ -93,21 +93,59 @@
     const w = stage.clientWidth, h = Math.max(260, Math.min(520, w * 0.55));
     renderer.setSize(w, h, false); cv.style.height = h + 'px'; camera.aspect = w / h; camera.updateProjectionMatrix(); render();
   }
-  const pts = new Map(); let pinch0 = 0, dist0 = dist;
-  cv.addEventListener('pointerdown', e => { cv.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch0 = Math.hypot(a.x - b.x, a.y - b.y); dist0 = dist; } });
+  const pts = new Map(); let pinch0 = 0, mid0 = null, panning = false;
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  function under(cx, cy, partOnly) {   // the part under the pointer, else where its ray meets the plane through the target
+    const b = cv.getBoundingClientRect();
+    ndc.set((cx - b.left) / b.width * 2 - 1, -(cy - b.top) / b.height * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+    const hit = ray.intersectObjects(meshes, true).find(h => h.object.isMesh);
+    if (hit || partOnly) return hit ? hit.point : null;
+    const n = camera.getWorldDirection(new THREE.Vector3());
+    return ray.ray.intersectPlane(new THREE.Plane().setFromNormalAndCoplanarPoint(n, target), new THREE.Vector3());
+  }
+  function pan(dx, dy) {   // the model follows the pointer
+    const k = 2 * dist * Math.tan(camera.fov * Math.PI / 360) / Math.max(cv.clientHeight, 1);
+    target.addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 0), -dx * k)
+          .addScaledVector(new THREE.Vector3().setFromMatrixColumn(camera.matrixWorld, 1), dy * k);
+  }
+  function zoom(s, cx, cy) {   // scale the view about the point under the pointer, which stays where it is on screen
+    const nd = Math.max(10, Math.min(2000, dist * s)), p = under(cx, cy);
+    if (p) target.sub(p).multiplyScalar(nd / dist).add(p);
+    dist = nd;
+  }
+  const two = () => { const [a, b] = [...pts.values()]; return { h: Math.hypot(a.x - b.x, a.y - b.y), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 }; };
+  cv.addEventListener('contextmenu', e => e.preventDefault());
+  cv.addEventListener('pointerdown', e => {
+    cv.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    panning = e.button === 1 || e.button === 2 || e.shiftKey;
+    if (pts.size === 2) { mid0 = two(); pinch0 = mid0.h; }
+  });
   cv.addEventListener('pointermove', e => {
     if (!pts.has(e.pointerId)) return;
     const prev = pts.get(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
-    if (pts.size === 1) { yaw += (e.clientX - prev.x) * 0.008; pitch = Math.max(-1.45, Math.min(1.45, pitch + (e.clientY - prev.y) * 0.008)); }
-    else if (pts.size === 2 && pinch0) { const [a, b] = [...pts.values()]; dist = Math.max(120, Math.min(2000, dist0 * pinch0 / Math.hypot(a.x - b.x, a.y - b.y))); }
+    const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+    if (pts.size === 1) {
+      if (panning) pan(dx, dy);
+      else { yaw += dx * 0.008; pitch = Math.max(-1.45, Math.min(1.45, pitch + dy * 0.008)); }
+    } else if (pts.size === 2 && pinch0) {   // two fingers: pinch to zoom, move together to pan
+      const m = two(); pan(m.x - mid0.x, m.y - mid0.y); render();
+      if (m.h) zoom(pinch0 / m.h, m.x, m.y); mid0 = m; pinch0 = m.h;
+    }
     render();
   });
   const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch0 = 0; };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
-  cv.addEventListener('wheel', e => { e.preventDefault(); dist = Math.max(120, Math.min(2000, dist * (1 + Math.sign(e.deltaY) * 0.08))); render(); }, { passive: false });
+  cv.addEventListener('wheel', e => { e.preventDefault(); zoom(1 + Math.sign(e.deltaY) * 0.08, e.clientX, e.clientY); render(); }, { passive: false });
+  cv.addEventListener('dblclick', e => {   // turn round the part under the pointer from now on
+    const p = under(e.clientX, e.clientY, true); if (!p) return;
+    const a = target.clone(), t0 = performance.now();
+    const step = t => { const k = Math.min(1, (t - t0) / 300); target.lerpVectors(a, p, k * (2 - k)); render(); if (k < 1) requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+  });
   ex.addEventListener('input', () => { place(); render(); });
   xr.addEventListener('change', () => { place(); render(); });
-  document.getElementById('vreset').addEventListener('click', () => { ({ yaw, pitch, dist } = home); ex.value = 0; place(); render(); });
+  document.getElementById('vreset').addEventListener('click', () => { ({ yaw, pitch, dist } = home); target.copy(homeT); ex.value = 0; place(); render(); });
   const bb = [...document.querySelectorAll('#turn .vbar button[data-v]')];
   bb.forEach(b => b.addEventListener('click', () => {
     bb.forEach(x => x.setAttribute('aria-pressed', x === b)); build(b.dataset.v);
