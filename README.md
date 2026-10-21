@@ -196,10 +196,10 @@ walls are too long for a 600mm bed and the generator refuses them; trim and file
 one instead, as below.
 
 **Trimming the foot does not tune the holes.** They move with the embouchure term
-almost as far as the foot does. If the closed note needs the foot trimmed short of
-the line, the holes will play sharp, and a hole cannot be made smaller. If it needs
-less trimmed off than the line, they will play flat, and each can be filed longer
-along the flute, which raises its note. File in small steps.
+almost as far as the foot does. If the closed note reaches D4 before the foot is
+trimmed back to the line, the holes will play sharp, and a hole cannot be made
+smaller. If it needs the foot trimmed past the line, they will play flat, and each
+can be filed longer along the flute, which raises its note. File in small steps.
 
 **Cut it in 3mm Baltic birch plywood**, at a 0.13mm kerf. The fingers are about
 6.1mm long, with no play, so the fit comes from the kerf compensation alone. **If your
