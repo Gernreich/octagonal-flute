@@ -1,5 +1,7 @@
 # Octagonal flute
 
+**[← All projects](https://gernreich.github.io/)**
+
 <!-- readme-only -->
 **[Read the writeup](https://gernreich.github.io/octagonal-flute/)** ·
 **[Turn it in 3D](https://gernreich.github.io/octagonal-flute/#turn-it-in-3d)**
@@ -31,7 +33,7 @@ to pitch. [Before you cut](#before-you-cut) says what that means for the first o
 
 Built for **[LaserMadeMusic](https://www.youtube.com/@LaserMadeMusic)**.
 
-**[The rest of the build files](https://gernreich.github.io/)** — every instrument,
+**[The rest of the build files](https://gernreich.github.io/lasermademusic.html)** — every instrument,
 generator and tool, indexed.
 
 **[Download everything as a ZIP](https://github.com/Gernreich/octagonal-flute/archive/refs/heads/main.zip)**
