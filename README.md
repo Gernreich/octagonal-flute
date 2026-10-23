@@ -4,9 +4,11 @@
 
 <!-- readme-only -->
 **[Read the writeup](https://gernreich.github.io/octagonal-flute/)** ·
-**[Turn it in 3D](https://gernreich.github.io/octagonal-flute/#turn-it-in-3d)**
+**[Turn it in 3D](https://gernreich.github.io/octagonal-flute/)**
 
-<!-- page-only **[Read the README](https://github.com/Gernreich/octagonal-flute)** -->
+<!-- page-only **[Read the README](https://github.com/Gernreich/octagonal-flute)** · **[Turn it in 3D on a page of its own](turn.html)** -->
+
+<!-- page-only <div id="turn3d"></div><script src="viewer.js"></script> -->
 
 A six-hole transverse flute in D, the size and fingering of an Irish or simple-system
 wooden flute, built in 3mm plywood as a long octagonal tube: eight strips, each the
@@ -102,11 +104,11 @@ The faces either side of the top fall away at 45° beneath it.
 ## Turn it in 3D
 
 <!-- readme-only -->
-The flute turns in 3D on the [published page](https://gernreich.github.io/octagonal-flute/#turn-it-in-3d),
+The flute turns in 3D at the top of the [published page](https://gernreich.github.io/octagonal-flute/),
 which GitHub does not run: drag to turn it, pull it apart into its parts, or see
 through the walls into the bore.
 
-<!-- page-only <div id="turn3d"></div><script src="viewer.js"></script> -->
+<!-- page-only The 3D view is at [the top of this page](#octagonal-flute). It also opens [on a page of its own](turn.html). -->
 
 ## The holes
 
