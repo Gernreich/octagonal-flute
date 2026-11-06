@@ -11,7 +11,7 @@
 <!-- page-only <div id="turn3d"></div><script src="viewer.js"></script> -->
 
 A six-hole transverse flute in D, the size and fingering of an Irish or simple-system
-wooden flute, built in 3mm plywood as a long octagonal tube: eight strips, each the
+wooden flute, built in 3 mm plywood as a long octagonal tube: eight strips, each the
 length of the flute, finger-jointed to their neighbours down every edge. You blow
 across an embouchure hole near the closed head end, as on any side-blown flute.
 All holes closed, it sounds D4; opening them from the foot up gives the D major
@@ -29,7 +29,7 @@ to pitch. [Before you cut](#before-you-cut) says what that means for the first o
 <td align="center"><a href="cut-files/octagonal-flute-D4-sheet1-cut-files.svg"><img src="previews/octagonal-flute-D4-sheet1-cut-files.svg" alt="One sheet of parts: eight long thin strips with small square fingers notched along both edges, the top one with a rounded slot for the embouchure near one end, six finger holes along its middle, some round and some longer than wide, and two short blue lines across it, one near each end; below them a rounded plate with the same slot through it, and three small octagons" width="100%"></a></td>
 </tr>
 <tr>
-<td align="center"><sub>the whole flute on one 582 × 152mm sheet</sub></td>
+<td align="center"><sub>the whole flute on one 582 × 152 mm sheet</sub></td>
 </tr>
 </table>
 
@@ -45,32 +45,32 @@ generator and tool, indexed.
 | | |
 |---|---|
 | Key | D: D4 with every hole closed, six holes, the D major scale |
-| Bore | a regular octagon 19mm across its flats inside, 299mm², the area of a 19.5mm round bore |
-| Outside | 25mm across the flats; each wall 10.36mm wide outside, 7.87mm inside |
-| Length | 571.9mm as cut, 546.9mm once trimmed to the model's foot |
+| Bore | a regular octagon 19 mm across its flats inside, 299mm², the area of a 19.5 mm round bore |
+| Outside | 25 mm across the flats; each wall 10.36 mm wide outside, 7.87 mm inside |
+| Length | 571.9 mm as cut, 546.9 mm once trimmed to the model's foot |
 | Parts | 12 on one sheet: eight walls, the lip plate and three cork discs |
 | Joints | the walls press-fit; the lip plate glued; the cork press-fit, so it can move |
 
 From the head end:
 
-- **The head**: 6mm of bare tube past the cork.
-- **The cork**: three octagonal discs, 9mm in all, pressed into the bore with their
-  face 20mm from the embouchure's centre. They are drawn 0.12mm over the bore's size
+- **The head**: 6 mm of bare tube past the cork.
+- **The cork**: three octagonal discs, 9 mm in all, pressed into the bore with their
+  face 20 mm from the embouchure's centre. They are drawn 0.12 mm over the bore's size
   across the flats, the square flute's press-fit for its plug discs.
-- **The embouchure**, 35mm from the head end: a slot with round ends, 7mm across and
-  12mm along the flute, through the top wall and the lip plate glued over it.
+- **The embouchure**, 35 mm from the head end: a slot with round ends, 7 mm across and
+  12 mm along the flute, through the top wall and the lip plate glued over it.
 - **The six holes**, on the top wall's centre line, three for each hand.
-- **The foot**: open, cut 25mm longer than the model asks for.
+- **The foot**: open, cut 25 mm longer than the model asks for.
 
 The walls are the four-hole ocarinas' joint at 135°. Each edge is split into cells
-about 6mm long, which alternate between the two walls. In its own cells a wall runs
-out to the edge line; in its neighbour's it stops 2.12mm short, which is 3mm × sin
-135°, the least that keeps its 3mm of ply out of the neighbour's. So every joint
+about 6 mm long, which alternate between the two walls. In its own cells a wall runs
+out to the edge line; in its neighbour's it stops 2.12 mm short, which is 3 mm × sin
+135°, the least that keeps its 3 mm of ply out of the neighbour's. So every joint
 closes on a line, and a small V shows outside along each seam, which the shellac
-fills. Where both neighbours own the cells, a wall keeps 6.11mm of its 10.36mm width.
+fills. Where both neighbours own the cells, a wall keeps 6.11 mm of its 10.36 mm width.
 
 **The top wall keeps its whole width beside every opening.** It owns every cell of
-both its edges for 3mm either side of the embouchure and each hole, so no hole sits
+both its edges for 3 mm either side of the embouchure and each hole, so no hole sits
 next to a joint.
 
 ## The embouchure
@@ -82,13 +82,13 @@ things shape how it plays, and in a flat wall of plywood each needs a decision.
 **Its depth.** The hole's walls, the chimney, set how much air moves in the hole
 with the jet, and so the tone: a shallow chimney is bright and easy, like a fife's;
 a deep one is dark and resistant. A wooden flute's chimney is the thickness of its
-wall, several millimetres. 3mm of ply alone would be nearer a fife's, so a **lip plate**, a
-second ply, is glued over the top wall with the same slot through it: a 6mm chimney.
+wall, several millimetres. 3 mm of ply alone would be nearer a fife's, so a **lip plate**, a
+second ply, is glued over the top wall with the same slot through it: a 6 mm chimney.
 
-**Its size and shape.** An Irish flute's embouchure is an oval about 10 to 11mm
-across and 12 to 13mm along the flute. Here the hole cannot be wider than the
-top wall's inside, 7.87mm, or it would open into the joints, so it is 7mm across
-and stretched to 12mm along the flute. That is about 70% of an Irish
+**Its size and shape.** An Irish flute's embouchure is an oval about 10 to 11 mm
+across and 12 to 13 mm along the flute. Here the hole cannot be wider than the
+top wall's inside, 7.87 mm, or it would open into the joints, so it is 7 mm across
+and stretched to 12 mm along the flute. That is about 70% of an Irish
 flute's area: it should speak easily and play a little quieter.
 
 **Its edges.** The far edge, the one the breath strikes, wants to be crisp, and the
@@ -97,7 +97,7 @@ so **file both by hand before the lip plate goes on**, while the two plies can s
 be worked from both faces. Keep the far edge sharp where it meets the lip plate's top
 face, and round over the near edge, where the lower lip rests, a little.
 
-The lip plate is 26 × 40mm, its corners rounded, wider than the 10.36mm top wall it
+The lip plate is 26 × 40 mm, its corners rounded, wider than the 10.36 mm top wall it
 sits on, so the lower lip has something flat to rest on and roll the flute against.
 The faces either side of the top fall away at 45° beneath it.
 
@@ -116,29 +116,29 @@ through the walls into the bore.
 
 | Hole | Finger | From the embouchure's centre | From the head end | Size |
 |---|---|---|---|---|
-| `L1` | left index | 218.8mm | 253.8mm | 7 × 11.0mm slot |
-| `L2` | left middle | 252.8mm | 287.8mm | 7 × 9.2mm slot |
-| `L3` | left ring | 286.8mm | 321.8mm | ø6.8mm |
-| `R1` | right index | 336.0mm | 371.0mm | ø5.6mm |
-| `R2` | right middle | 370.0mm | 405.0mm | 7 × 11.0mm slot |
-| `R3` | right ring | 404.0mm | 439.0mm | ø5.5mm |
+| `L1` | left index | 218.8 mm | 253.8 mm | 7 × 11.0 mm slot |
+| `L2` | left middle | 252.8 mm | 287.8 mm | 7 × 9.2 mm slot |
+| `L3` | left ring | 286.8 mm | 321.8 mm | ø6.8mm |
+| `R1` | right index | 336.0 mm | 371.0 mm | ø5.6mm |
+| `R2` | right middle | 370.0 mm | 405.0 mm | 7 × 11.0 mm slot |
+| `R3` | right ring | 404.0 mm | 439.0 mm | ø5.5mm |
 
-**Each hand's holes are 34mm apart, and the hands 49.2mm.** Left to themselves, at
-one size each, the holes would fall where their notes put them: at 7mm round, 56,
-17, 55, 42 and 37mm apart, the lower hand's first gap far too wide for a hand. A
+**Each hand's holes are 34 mm apart, and the hands 49.2 mm.** Left to themselves, at
+one size each, the holes would fall where their notes put them: at 7 mm round, 56,
+17, 55, 42 and 37 mm apart, the lower hand's first gap far too wide for a hand. A
 smaller hole has to sit nearer the embouchure to play the same note, which is what
 lets the holes close up. So in each hand one hole is as big as the wall allows, and
-its place is solved; the hand's other two stand 34mm from it and their sizes are
+its place is solved; the hand's other two stand 34 mm from it and their sizes are
 solved. The big ones are `R2`, the lower hand's middle, and `L1`, the upper hand's
 top, the two that leave their neighbours room to be smaller.
 
-**A hole wider than the wall's inside is a slot.** No hole can be wider than 7mm,
-since the wall is only 7.87mm wide inside. Above that the hole grows along the flute
-instead, 7mm across and up to 12mm long, which a finger pad covers easily; the model
-reads a slot as the round hole of its area. The two big holes are cut 11mm long, 1mm
+**A hole wider than the wall's inside is a slot.** No hole can be wider than 7 mm,
+since the wall is only 7.87 mm wide inside. Above that the hole grows along the flute
+instead, 7 mm across and up to 12 mm long, which a finger pad covers easily; the model
+reads a slot as the round hole of its area. The two big holes are cut 11 mm long, 1 mm
 short of that, so even they can be filed longer.
 
-`R3`, the E hole, comes out small, 5.5mm, to sit within reach. Small holes play a
+`R3`, the E hole, comes out small, 5.5 mm, to sit within reach. Small holes play a
 little veiled, so E may be the weakest note.
 
 ## Fingering
@@ -169,23 +169,23 @@ python3 flute_model.py
 | C♯5 | 554.37 | 0.0 | +13.1 |
 
 The model is a transmission-matrix one, the square flute's carried over: the bore a
-lossy tube; each finger hole a Keefe tone hole in a 3mm wall; the embouchure a short
-neck into open air, 6mm deep, with the cork's closed stub beside it. Its loss is
+lossy tube; each finger hole a Keefe tone hole in a 3 mm wall; the embouchure a short
+neck into open air, 6 mm deep, with the cork's closed stub beside it. Its loss is
 taken on the bore's hydraulic radius, which for any regular polygon is half its
-flats, 9.5mm. Air is at 25°C, as breath warms it.
+flats, 9.5 mm. Air is at 25°C, as breath warms it.
 
 The first octave lands on the scale because the solver puts it there. The last
 column is the useful one: it says how far each note's overblown octave lands from
 a true octave. Up to 30 cents is about what a player corrects with the lips on any
-simple-system flute. The cork moves it: `--cork=17` brings the cork 3mm nearer and
+simple-system flute. The cork moves it: `--cork=17` brings the cork 3 mm nearer and
 widens the octaves, and a cork further away narrows them.
 
 ## Before you cut
 
 **The embouchure's end correction is not measured.** The lip covers part of the
 hole, by an amount that changes with the player, and the model takes it as a quarter.
-Every length rests on it: each 0.25 of `--mouth` moves the foot about 9mm and every
-hole 7.8 to 8.6mm. So **the foot is cut 25mm long**. As cut, the closed note should
+Every length rests on it: each 0.25 of `--mouth` moves the foot about 9 mm and every
+hole 7.8 to 8.6 mm. So **the foot is cut 25 mm long**. As cut, the closed note should
 sound about 282Hz, D4 72 cents flat; a blue line across the top wall near the foot
 marks where the model puts the end. With every hole closed, blow the cut flute and
 read its pitch, measure from the embouchure's centre to the foot, then
@@ -196,7 +196,7 @@ python3 flute_model.py --heard=285 --length=537   # the pitch you heard, in Hz, 
 
 prints the `--mouth` that explains it, and the command to redraw the flute with it.
 The first flute cut is the measurement. If it sounds above about 290Hz, the redrawn
-walls are too long for a 600mm bed and the generator refuses them; trim and file this
+walls are too long for a 600 mm bed and the generator refuses them; trim and file this
 one instead, as below.
 
 **Trimming the foot does not tune the holes.** They move with the embouchure term
@@ -205,13 +205,13 @@ trimmed back to the line, the holes will play sharp, and a hole cannot be made
 smaller. If it needs the foot trimmed past the line, they will play flat, and each
 can be filed longer along the flute, which raises its note. File in small steps.
 
-**Cut it in 3mm Baltic birch plywood**, at a 0.13mm kerf. The fingers are about
-6.1mm long, with no play, so the fit comes from the kerf compensation alone. **If your
-laser's kerf is not 0.13mm, redraw the sheet for its own** with `--kerf=`: a press-fit
+**Cut it in 3 mm Baltic birch plywood**, at a 0.13 mm kerf. The fingers are about
+6.1 mm long, with no play, so the fit comes from the kerf compensation alone. **If your
+laser's kerf is not 0.13 mm, redraw the sheet for its own** with `--kerf=`: a press-fit
 that comes out loose wants a wider kerf, one too tight to close a narrower one.
 
-**The walls are 571.9mm long**, and the sheet is 582 × 152mm, so the bed must be
-at least 582mm long. The generator checks against a 600 × 305mm bed.
+**The walls are 571.9 mm long**, and the sheet is 582 × 152 mm, so the bed must be
+at least 582 mm long. The generator checks against a 600 × 305 mm bed.
 
 Run the engrave first, then the cuts. **Blue** engraves two lines across the top
 wall: where the cork's face goes, and the model's foot. Then **orange** cuts the
