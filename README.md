@@ -279,6 +279,8 @@ the joint from the four-hole ocarinas' `polyhedron.py`, so
 [swept-curve](https://github.com/Gernreich/swept-curve) must be checked out beside
 this repository.
 
+One more is optional: with [bore-tmm](https://github.com/Gernreich/bore-tmm) checked out beside it too and built (`cargo build --release`), `flute_model.py` searches for each note in bore-tmm's Rust port of it, which gives the same results bit for bit, much sooner. Without it the Python runs, as it always did.
+
 ## Files
 
 | | |

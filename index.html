@@ -431,6 +431,7 @@ python3 page_assets.py                          # viewer.js, turn.html and the t
 <li>every part is on a sheet.</li>
 </ul>
 <p>It imports the square flute's plates, kerf and packer from <code>square_flute.py</code>, and the joint from the four-hole ocarinas' <code>polyhedron.py</code>, so <a href="https://github.com/Gernreich/square-flute" target="_blank" rel="noopener">square-flute</a>, <a href="https://github.com/Gernreich/four-hole-ocarinas" target="_blank" rel="noopener">four-hole-ocarinas</a> and <a href="https://github.com/Gernreich/swept-curve" target="_blank" rel="noopener">swept-curve</a> must be checked out beside this repository.</p>
+<p>One more is optional: with <a href="https://github.com/Gernreich/bore-tmm" target="_blank" rel="noopener">bore-tmm</a> checked out beside it too and built (<code>cargo build --release</code>), <code>flute_model.py</code> searches for each note in bore-tmm's Rust port of it, which gives the same results bit for bit, much sooner. Without it the Python runs, as it always did.</p>
 <h2 id="files">Files</h2>
 <div class="tw">
 <table>
