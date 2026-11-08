@@ -320,6 +320,10 @@ lasermade-tools' `step-export`, and `.repro` checks them:
 ../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute
 ```
 
+The files:
+
+- `step/octagonal-flute-octagonal-flute-d4.step`
+
 ## Credits
 
 Made by Michael Gernreich with [Claude](https://www.anthropic.com/claude) (Anthropic), working in Claude Code, which co-wrote the code and the documentation. Commits Claude made carry a `Co-Authored-By: Claude` line.

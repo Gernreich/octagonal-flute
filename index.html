@@ -489,6 +489,10 @@ target/release/page_assets                             # viewer.js, turn.html an
 <h2 id="step-files">STEP files</h2>
 <p><code>step/</code> holds the 3D view as STEP files, one per design, to open or import in a CAD program such as SolidCraft, Fusion or FreeCAD: one solid body per part, in millimetres, assembled as the view shows it. Every face is flat, so a curve comes in as short straight runs; round holes come in with 64 sides, and the flue marks, which have no depth, are left out. They are written from <code>viewer.js</code> by lasermade-tools' <code>step-export</code>, and <code>.repro</code> checks them:</p>
 <pre><code>../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute</code></pre>
+<p>The files:</p>
+<ul>
+<li><code>step/octagonal-flute-octagonal-flute-d4.step</code></li>
+</ul>
 <h2 id="credits">Credits</h2>
 <p>Made by Michael Gernreich with <a href="https://www.anthropic.com/claude" target="_blank" rel="noopener">Claude</a> (Anthropic), working in Claude Code, which co-wrote the code and the documentation. Commits Claude made carry a <code>Co-Authored-By: Claude</code> line.</p>
 </main>
