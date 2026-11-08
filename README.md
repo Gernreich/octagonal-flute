@@ -299,6 +299,7 @@ beside this repository.
 | `viewer.js` | the 3D view, loaded by the published page |
 | `turn.html` | the same 3D view on a page of its own, for framing elsewhere |
 | `flute_model.rs` | the acoustic model, and the design as bore-tmm reads it |
+| `solidcraft.rs` · `solidcraft/` | the flute as a parametric SolidCraft design, and the design it writes |
 | `octagonal_flute.rs` | the generator, its checks and the cut file |
 | `page_assets.rs` | builds `viewer.js`, `turn.html` and the plans |
 | `bin/` · `Cargo.toml` · `Cargo.lock` | the crate: one small file per program, and the pinned build |
@@ -307,22 +308,61 @@ beside this repository.
 
 Released under [CC0 1.0](LICENSE).
 
+## SolidCraft design
+
+The generator also writes the flute as a parametric SolidCraft design: the rules it
+follows are expressions there, so changing one number rebuilds the rest. Open
+`solidcraft/octagonal-flute-d4.sc` in SolidCraft. The parameters are under the
+**SOLID** tab, **MODIFY** panel, **Change Parameters**; the Browser lists the parts and
+the timeline every step. `solidcraft/octagonal-flute-d4.solidcraft.json` is the script it
+was built from (`solidcraft-cli run FILE --save NAME.sc`). The `.sc` holds the design
+without SolidCraft's build cache, which it rebuilds on opening, so it is the same file
+every time.
+
+| Parameter | Default | What it is |
+|---|---|---|
+| `ply` | 3 mm | sheet thickness: every wall, the lip plate, each cork disc, and the joints' depth |
+| `flats` | 19 mm | the bore, an octagon, across its flats inside |
+| `head_past` · `cork` | 6 · 20 mm | bare tube past the cork, and the cork's face to the embouchure's centre, which moves the octaves |
+| `cork_discs` · `interf` | 3 · 0.12 mm | the cork's discs, each a part, and their press-fit |
+| `emb_w` · `emb_l` | 7 · 12 mm | the embouchure, across and along |
+| `chamber` · `h_1` … `h_6` · `d_1` … `d_6` | the model's | the embouchure's centre to the foot, and each hole's place and diameter, foot-most (R3) first |
+| `hole_w` | 7 mm | a hole is round up to this; past it, a stadium this wide and longer, of the same area |
+| `foot_spare` | 25 mm | cut long at the foot, to trim to pitch |
+| `finger` · `hole_clear` | 6 · 3 mm | the shortest joint cell, and how far past every opening the top keeps both its edges |
+| `lip_w` · `lip_l` · `lip_r` | 26 · 40 · 9 mm | the lip plate, across, along, and its corners' radius |
+
+The tuning cannot follow: the chamber and the holes are what the model's solver found
+for that bore, and no expression redoes it. They are parameters so that a flute tuned
+by hand can be written back into its design; change the bore or the ply and they no
+longer play D4 until the model is run again.
+
+Read-only parameters show the results: the walls' `length`, the cell count `ncell`,
+each hole's `across_` and `along_`, the cells the top keeps round each opening
+(`jlo_` and `jhi_`), and the generator's checks as room left, where below 0 fails:
+`bed_room` (the bed past the walls), `open_room` (the top's inside past the widest
+opening), `gap_room` (ply between the closest two openings, past 3 mm), `reach_room`
+(a hand's span within a hand, of 36 mm) and `web_room` (ply a wall keeps between its
+joints). The blue lines are not drawn.
+
+**Checked** part by part against the generator's own: all twelve match to within
+0.012 mm, the sag of the earlier STEP file's straight runs round a curve. With the
+holes moved and widened into stadia, and with them crowded so the cells kept round
+them run together, the generator's build for those holes and the design given the
+same numbers match the same way. With `ply` at 3.2 mm, or a 21 mm bore, a longer cork
+and a hole moved, no two parts overlap but the cork's press-fit.
+
 ## STEP files
 
-`step/` holds the 3D view as STEP files, one per design, to open or import in a
-CAD program such as SolidCraft, Fusion or FreeCAD: one solid body per part, in
-millimetres, assembled as the view shows it. Every face is flat, so a curve comes
-in as short straight runs; round holes come in with 64 sides, and the flue marks, which have
-no depth, are left out. They are written from `viewer.js` by
-lasermade-tools' `step-export`, and `.repro` checks them:
+`step/octagonal-flute-octagonal-flute-d4.step` is the design built by SolidCraft, to
+open or import in a CAD program such as Fusion or FreeCAD: one solid body per part, in
+millimetres, assembled, with no parameters. The openings are true stadia and circles.
+`.repro` checks it:
 
 ```
-../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute
+target/release/octagonal_flute --no-write --solidcraft=solidcraft
+solidcraft-cli run solidcraft/octagonal-flute-d4.solidcraft.json --out step/octagonal-flute-octagonal-flute-d4.step
 ```
-
-The files:
-
-- `step/octagonal-flute-octagonal-flute-d4.step`
 
 ## Credits
 

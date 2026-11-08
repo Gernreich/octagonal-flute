@@ -99,7 +99,7 @@ pre,.tw{break-inside:avoid}h1{break-after:avoid}}
 <body>
 <button class="tog" type="button">theme</button>
 <div class="wrap">
-<nav><b>Contents</b><a class="l1" href="#octagonal-flute">Octagonal flute</a><a class="l2" href="#the-flute">The flute</a><a class="l2" href="#the-embouchure">The embouchure</a><a class="l2" href="#turn-it-in-3d">Turn it in 3D</a><a class="l2" href="#the-holes">The holes</a><a class="l2" href="#fingering">Fingering</a><a class="l2" href="#what-the-model-says">What the model says</a><a class="l2" href="#before-you-cut">Before you cut</a><a class="l2" href="#building-it">Building it</a><a class="l2" href="#regenerating-it">Regenerating it</a><a class="l2" href="#files">Files</a><a class="l2" href="#step-files">STEP files</a><a class="l2" href="#credits">Credits</a></nav>
+<nav><b>Contents</b><a class="l1" href="#octagonal-flute">Octagonal flute</a><a class="l2" href="#the-flute">The flute</a><a class="l2" href="#the-embouchure">The embouchure</a><a class="l2" href="#turn-it-in-3d">Turn it in 3D</a><a class="l2" href="#the-holes">The holes</a><a class="l2" href="#fingering">Fingering</a><a class="l2" href="#what-the-model-says">What the model says</a><a class="l2" href="#before-you-cut">Before you cut</a><a class="l2" href="#building-it">Building it</a><a class="l2" href="#regenerating-it">Regenerating it</a><a class="l2" href="#files">Files</a><a class="l2" href="#solidcraft-design">SolidCraft design</a><a class="l2" href="#step-files">STEP files</a><a class="l2" href="#credits">Credits</a></nav>
 <main>
 <h1 id="octagonal-flute">Octagonal flute</h1>
 <p><strong><a href="https://gernreich.github.io/" target="_blank" rel="noopener">← All projects</a></strong></p>
@@ -463,6 +463,10 @@ target/release/page_assets                             # viewer.js, turn.html an
 <td>the acoustic model, and the design as bore-tmm reads it</td>
 </tr>
 <tr>
+<td><code>solidcraft.rs</code> · <code>solidcraft/</code></td>
+<td>the flute as a parametric SolidCraft design, and the design it writes</td>
+</tr>
+<tr>
 <td><code>octagonal_flute.rs</code></td>
 <td>the generator, its checks and the cut file</td>
 </tr>
@@ -486,13 +490,78 @@ target/release/page_assets                             # viewer.js, turn.html an
 </table>
 </div>
 <p>Released under <a href="LICENSE" target="_blank" rel="noopener">CC0 1.0</a>.</p>
+<h2 id="solidcraft-design">SolidCraft design</h2>
+<p>The generator also writes the flute as a parametric SolidCraft design: the rules it follows are expressions there, so changing one number rebuilds the rest. Open <code>solidcraft/octagonal-flute-d4.sc</code> in SolidCraft. The parameters are under the <strong>SOLID</strong> tab, <strong>MODIFY</strong> panel, <strong>Change Parameters</strong>; the Browser lists the parts and the timeline every step. <code>solidcraft/octagonal-flute-d4.solidcraft.json</code> is the script it was built from (<code>solidcraft-cli run FILE --save NAME.sc</code>). The <code>.sc</code> holds the design without SolidCraft's build cache, which it rebuilds on opening, so it is the same file every time.</p>
+<div class="tw">
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ply</code></td>
+<td>3 mm</td>
+<td>sheet thickness: every wall, the lip plate, each cork disc, and the joints' depth</td>
+</tr>
+<tr>
+<td><code>flats</code></td>
+<td>19 mm</td>
+<td>the bore, an octagon, across its flats inside</td>
+</tr>
+<tr>
+<td><code>head_past</code> · <code>cork</code></td>
+<td>6 · 20 mm</td>
+<td>bare tube past the cork, and the cork's face to the embouchure's centre, which moves the octaves</td>
+</tr>
+<tr>
+<td><code>cork_discs</code> · <code>interf</code></td>
+<td>3 · 0.12 mm</td>
+<td>the cork's discs, each a part, and their press-fit</td>
+</tr>
+<tr>
+<td><code>emb_w</code> · <code>emb_l</code></td>
+<td>7 · 12 mm</td>
+<td>the embouchure, across and along</td>
+</tr>
+<tr>
+<td><code>chamber</code> · <code>h_1</code> … <code>h_6</code> · <code>d_1</code> … <code>d_6</code></td>
+<td>the model's</td>
+<td>the embouchure's centre to the foot, and each hole's place and diameter, foot-most (R3) first</td>
+</tr>
+<tr>
+<td><code>hole_w</code></td>
+<td>7 mm</td>
+<td>a hole is round up to this; past it, a stadium this wide and longer, of the same area</td>
+</tr>
+<tr>
+<td><code>foot_spare</code></td>
+<td>25 mm</td>
+<td>cut long at the foot, to trim to pitch</td>
+</tr>
+<tr>
+<td><code>finger</code> · <code>hole_clear</code></td>
+<td>6 · 3 mm</td>
+<td>the shortest joint cell, and how far past every opening the top keeps both its edges</td>
+</tr>
+<tr>
+<td><code>lip_w</code> · <code>lip_l</code> · <code>lip_r</code></td>
+<td>26 · 40 · 9 mm</td>
+<td>the lip plate, across, along, and its corners' radius</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The tuning cannot follow: the chamber and the holes are what the model's solver found for that bore, and no expression redoes it. They are parameters so that a flute tuned by hand can be written back into its design; change the bore or the ply and they no longer play D4 until the model is run again.</p>
+<p>Read-only parameters show the results: the walls' <code>length</code>, the cell count <code>ncell</code>, each hole's <code>across_</code> and <code>along_</code>, the cells the top keeps round each opening (<code>jlo_</code> and <code>jhi_</code>), and the generator's checks as room left, where below 0 fails: <code>bed_room</code> (the bed past the walls), <code>open_room</code> (the top's inside past the widest opening), <code>gap_room</code> (ply between the closest two openings, past 3 mm), <code>reach_room</code> (a hand's span within a hand, of 36 mm) and <code>web_room</code> (ply a wall keeps between its joints). The blue lines are not drawn.</p>
+<p><strong>Checked</strong> part by part against the generator's own: all twelve match to within 0.012 mm, the sag of the earlier STEP file's straight runs round a curve. With the holes moved and widened into stadia, and with them crowded so the cells kept round them run together, the generator's build for those holes and the design given the same numbers match the same way. With <code>ply</code> at 3.2 mm, or a 21 mm bore, a longer cork and a hole moved, no two parts overlap but the cork's press-fit.</p>
 <h2 id="step-files">STEP files</h2>
-<p><code>step/</code> holds the 3D view as STEP files, one per design, to open or import in a CAD program such as SolidCraft, Fusion or FreeCAD: one solid body per part, in millimetres, assembled as the view shows it. Every face is flat, so a curve comes in as short straight runs; round holes come in with 64 sides, and the flue marks, which have no depth, are left out. They are written from <code>viewer.js</code> by lasermade-tools' <code>step-export</code>, and <code>.repro</code> checks them:</p>
-<pre><code>../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute</code></pre>
-<p>The files:</p>
-<ul>
-<li><code>step/octagonal-flute-octagonal-flute-d4.step</code></li>
-</ul>
+<p><code>step/octagonal-flute-octagonal-flute-d4.step</code> is the design built by SolidCraft, to open or import in a CAD program such as Fusion or FreeCAD: one solid body per part, in millimetres, assembled, with no parameters. The openings are true stadia and circles. <code>.repro</code> checks it:</p>
+<pre><code>target/release/octagonal_flute --no-write --solidcraft=solidcraft
+solidcraft-cli run solidcraft/octagonal-flute-d4.solidcraft.json --out step/octagonal-flute-octagonal-flute-d4.step</code></pre>
 <h2 id="credits">Credits</h2>
 <p>Made by Michael Gernreich with <a href="https://www.anthropic.com/claude" target="_blank" rel="noopener">Claude</a> (Anthropic), working in Claude Code, which co-wrote the code and the documentation. Commits Claude made carry a <code>Co-Authored-By: Claude</code> line.</p>
 </main>

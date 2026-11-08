@@ -20,6 +20,9 @@ plans/octagonal-flute-top-wall.svg :: target/release/page_assets --plans-to=$(di
 plans/octagonal-flute-fingering.svg :: target/release/page_assets --plans-to=$(dirname $OUT)
 index.html :: ../lasermade-tools/target/release/md2html README.md $OUT
 
-# --- the STEP files: the 3D view's parts as solids for a CAD program, one
-# file per design, written from the page by lasermade-tools' step-export ---
-step/octagonal-flute-octagonal-flute-d4.step :: ../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute --out=$(dirname $OUT)
+# --- the SolidCraft design, written by the generator; the design as SolidCraft
+# opens it, its build cache left out (lasermade-tools' sc-slim); and the STEP
+# file SolidCraft builds from it ---
+solidcraft/octagonal-flute-d4.solidcraft.json :: target/release/octagonal_flute --no-write --solidcraft=$(dirname $OUT)
+solidcraft/octagonal-flute-d4.sc :: target/release/octagonal_flute --no-write --solidcraft=$(dirname $OUT) && solidcraft-cli run $(dirname $OUT)/octagonal-flute-d4.solidcraft.json --save $OUT --quiet && ../lasermade-tools/target/release/sc-slim $OUT
+step/octagonal-flute-octagonal-flute-d4.step :: target/release/octagonal_flute --no-write --solidcraft=$(dirname $OUT) && solidcraft-cli run $(dirname $OUT)/octagonal-flute-d4.solidcraft.json --out $OUT --quiet

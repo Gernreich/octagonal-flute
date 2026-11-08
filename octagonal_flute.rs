@@ -48,6 +48,7 @@
 //! writer.
 pub mod flute_model;
 pub mod page_assets;
+pub mod solidcraft;
 
 use flute_model as m;
 use four_hole_ocarinas::polyhedron::{self as p3, Edge, Face, Frame, V3};
@@ -420,6 +421,7 @@ pub fn svg_sheet(k: usize, n: usize, s: &Sheet, parts: &[OPart], what: &str) -> 
 
 pub fn main() -> i32 {
     let (mut out, mut write): (Option<String>, bool) = (None, true);
+    let mut scdir: Option<String> = None;
     for x in std::env::args().skip(1) {
         if x == "--no-write" {
             write = false;
@@ -429,8 +431,10 @@ pub fn main() -> i32 {
             m::set_mouth(py::float(v).unwrap_or_else(|| lasermade_tools::die(format!("ValueError: could not convert string to float: {}", py::str_repr(v)))));
         } else if x.starts_with("--kerf=") {
             square_flute::set_kerf(&x);
+        } else if let Some(v) = x.strip_prefix("--solidcraft=") {
+            scdir = Some(v.to_string());
         } else {
-            lasermade_tools::die(format!("error: {x} is not a flag this generator reads. It takes --out=, --mouth=, --kerf= and --no-write."));
+            lasermade_tools::die(format!("error: {x} is not a flag this generator reads. It takes --out=, --mouth=, --kerf=, --solidcraft= and --no-write."));
         }
     }
     if write && out.is_none() {
@@ -440,6 +444,12 @@ pub fn main() -> i32 {
     let (l, holes, diams) = m::design(&b).unwrap_or_else(|e| lasermade_tools::die(format!("ValueError: {e}")));
     let rows = m::report(&b, l, &holes, &diams).unwrap_or_else(|e| lasermade_tools::die(format!("ValueError: {e}")));
     let (parts, info) = build(l, &holes, &diams);
+    if let Some(dir) = &scdir {
+        // the parametric design, which carries its own checks as room left
+        std::fs::create_dir_all(dir).unwrap_or_else(|e| lasermade_tools::die(format!("{dir}: {e}")));
+        let f = format!("{}/octagonal-flute-d4.solidcraft.json", dir.trim_end_matches('/'));
+        std::fs::write(&f, solidcraft::script(l, &holes, &diams)).unwrap_or_else(|e| lasermade_tools::die(format!("{f}: {e}")));
+    }
     let sheets = pack(&parts.iter().map(|p| (p.w, p.h)).collect::<Vec<_>>());
     let res = checks(&parts, &info, &holes, &rows, &sheets);
     let pos = &info.pos;
