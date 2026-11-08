@@ -1,0 +1,34 @@
+[package]
+name = "octagonal-flute"
+version = "0.1.0"
+edition = "2021"
+authors = ["Michael Gernreich", "Claude (Anthropic) <noreply@anthropic.com>"]
+description = "Cut files for a six-hole transverse flute in D with a finger-jointed octagonal bore"
+license-file = "LICENSE"
+publish = false
+autobins = false
+
+# The library is the generator; each program in bin/ is one main(). Rust
+# since 2026-11-07, Python until then: the move changed no byte of any file.
+[lib]
+name = "octagonal_flute"
+path = "octagonal_flute.rs"
+
+[[bin]]
+name = "octagonal_flute"
+path = "bin/octagonal_flute.rs"
+
+[[bin]]
+name = "flute_model"
+path = "bin/flute_model.rs"
+
+[[bin]]
+name = "page_assets"
+path = "bin/page_assets.rs"
+
+[dependencies]
+lasermade-tools = { path = "../lasermade-tools" }
+square-flute = { path = "../square-flute" }
+four-hole-ocarinas = { path = "../four-hole-ocarinas" }
+swept-curve = { path = "../swept-curve" }
+bore-tmm = { path = "../bore-tmm" }

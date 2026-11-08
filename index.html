@@ -328,7 +328,7 @@ pre,.tw{break-inside:avoid}h1{break-after:avoid}}
 </svg></figure>
 <p>The scale is the six-hole flute's. Black is covered. Lift the fingers from the foot up: all covered for D4, then <code>R3</code> open for E4, <code>R2</code> for F♯4, <code>R1</code> for G4, <code>L3</code> for A4, <code>L2</code> for B4 and <code>L1</code> for C♯5. Blow a little harder, with the lips a little closer, and the same fingerings sound the octave above; D5 is usually fingered with <code>L1</code> open. C natural is a cross fingering, as on any six-hole flute; the model does not work it out.</p>
 <h2 id="what-the-model-says">What the model says</h2>
-<pre class="sh"><code>python3 flute_model.py</code></pre>
+<pre class="sh"><code>target/release/flute_model</code></pre>
 <div class="tw">
 <table>
 <thead>
@@ -389,7 +389,7 @@ pre,.tw{break-inside:avoid}h1{break-after:avoid}}
 <p>The first octave lands on the scale because the solver puts it there. The last column is the useful one: it says how far each note's overblown octave lands from a true octave. Up to 30 cents is about what a player corrects with the lips on any simple-system flute. The cork moves it: <code>--cork=17</code> brings the cork 3 mm nearer and widens the octaves, and a cork further away narrows them.</p>
 <h2 id="before-you-cut">Before you cut</h2>
 <p><strong>The embouchure's end correction is not measured.</strong> The lip covers part of the hole, by an amount that changes with the player, and the model takes it as a quarter. Every length rests on it: each 0.25 of <code>--mouth</code> moves the foot about 9 mm and every hole 7.8 to 8.6 mm. So <strong>the foot is cut 25 mm long</strong>. As cut, the closed note should sound about 282Hz, D4 72 cents flat; a blue line across the top wall near the foot marks where the model puts the end. With every hole closed, blow the cut flute and read its pitch, measure from the embouchure's centre to the foot, then</p>
-<pre class="sh"><code>python3 flute_model.py --heard=285 --length=537   # the pitch you heard, in Hz, and that length in mm</code></pre>
+<pre class="sh"><code>target/release/flute_model --heard=285 --length=537   # the pitch you heard, in Hz, and that length in mm</code></pre>
 <p>prints the <code>--mouth</code> that explains it, and the command to redraw the flute with it. The first flute cut is the measurement. If it sounds above about 290Hz, the redrawn walls are too long for a 600 mm bed and the generator refuses them; trim and file this one instead, as below.</p>
 <p><strong>Trimming the foot does not tune the holes.</strong> They move with the embouchure term almost as far as the foot does. If the closed note reaches D4 before the foot is trimmed back to the line, the holes will play sharp, and a hole cannot be made smaller. If it needs the foot trimmed past the line, they will play flat, and each can be filed longer along the flute, which raises its note. File in small steps.</p>
 <p><strong>Cut it in 3 mm Baltic birch plywood</strong>, at a 0.13 mm kerf. The fingers are about 6.1 mm long, with no play, so the fit comes from the kerf compensation alone. <strong>If your laser's kerf is not 0.13 mm, redraw the sheet for its own</strong> with <code>--kerf=</code>: a press-fit that comes out loose wants a wider kerf, one too tight to close a narrower one.</p>
@@ -406,15 +406,18 @@ pre,.tw{break-inside:avoid}h1{break-after:avoid}}
 <li>Play the second octave, and move the cork a millimetre at a time to balance it against the first.</li>
 </ol>
 <h2 id="regenerating-it">Regenerating it</h2>
-<pre class="sh"><code>python3 flute_model.py                          # the design and how it plays
-python3 flute_model.py --mouth=1.2              # with a different embouchure correction
-python3 flute_model.py --cork=17                # with the cork elsewhere
-python3 flute_model.py --heard=285 --length=537 # the correction a cut flute implies
-python3 octagonal_flute.py --no-write           # the generator&#39;s checks, writing nothing
-python3 octagonal_flute.py --out=cut-files      # the cut file
-python3 octagonal_flute.py --kerf=0.18 --out=mine   # for a laser with a 0.18mm kerf
-python3 page_assets.py                          # viewer.js, turn.html and the two plans</code></pre>
-<p><code>octagonal_flute.py</code> draws nothing until every check passes:</p>
+<pre class="sh"><code>cargo build --release                                  # once, and after any change
+target/release/flute_model                             # the design and how it plays
+target/release/flute_model --mouth=1.2                 # with a different embouchure correction
+target/release/flute_model --cork=17                   # with the cork elsewhere
+target/release/flute_model --heard=285 --length=537    # the correction a cut flute implies
+target/release/flute_model --bores                     # the design, as bore-tmm reads it
+target/release/octagonal_flute --no-write              # the generator&#39;s checks, writing nothing
+target/release/octagonal_flute --out=cut-files         # the cut file
+target/release/octagonal_flute --kerf=0.18 --out=mine  # for a laser with a 0.18mm kerf
+target/release/page_assets                             # viewer.js, turn.html and the two plans</code></pre>
+<p>The programs are Rust since 2026-11-07, Python until then; the move changed no byte of the cut file, the plans or the page.</p>
+<p><code>octagonal_flute.rs</code> draws nothing until every check passes:</p>
 <ul>
 <li>the model holds the scale;</li>
 <li>the bore is the octagon the model plays;</li>
@@ -430,8 +433,7 @@ python3 page_assets.py                          # viewer.js, turn.html and the t
 <li>every sheet fits the bed;</li>
 <li>every part is on a sheet.</li>
 </ul>
-<p>It imports the square flute's plates, kerf and packer from <code>square_flute.py</code>, and the joint from the four-hole ocarinas' <code>polyhedron.py</code>, so <a href="https://github.com/Gernreich/square-flute" target="_blank" rel="noopener">square-flute</a>, <a href="https://github.com/Gernreich/four-hole-ocarinas" target="_blank" rel="noopener">four-hole-ocarinas</a> and <a href="https://github.com/Gernreich/swept-curve" target="_blank" rel="noopener">swept-curve</a> must be checked out beside this repository.</p>
-<p>One more is optional: with <a href="https://github.com/Gernreich/bore-tmm" target="_blank" rel="noopener">bore-tmm</a> checked out beside it too and built (<code>cargo build --release</code>), <code>flute_model.py</code> searches for each note in bore-tmm's Rust port of it, which gives the same results bit for bit, much sooner. Without it the Python runs, as it always did.</p>
+<p>The crate borrows the square flute's kerf and packer from <code>square_flute.rs</code>, the joint and the mitred offset from the four-hole ocarinas' <code>polyhedron.rs</code> and <code>four_hole_ocarinas.rs</code>, the path writer from swept-curve's <code>ribbon_bore.rs</code>, each note's search from bore-tmm's <code>src/models.rs</code>, and the viewer's page from the square flute's and the ocarinas' <code>page_assets.rs</code>. So <a href="https://github.com/Gernreich/square-flute" target="_blank" rel="noopener">square-flute</a>, <a href="https://github.com/Gernreich/four-hole-ocarinas" target="_blank" rel="noopener">four-hole-ocarinas</a>, <a href="https://github.com/Gernreich/swept-curve" target="_blank" rel="noopener">swept-curve</a>, <a href="https://github.com/Gernreich/bore-tmm" target="_blank" rel="noopener">bore-tmm</a> and <a href="https://github.com/Gernreich/lasermade-tools" target="_blank" rel="noopener">lasermade-tools</a> must be checked out beside this repository.</p>
 <h2 id="files">Files</h2>
 <div class="tw">
 <table>
@@ -457,16 +459,20 @@ python3 page_assets.py                          # viewer.js, turn.html and the t
 <td>the same 3D view on a page of its own, for framing elsewhere</td>
 </tr>
 <tr>
-<td><code>flute_model.py</code></td>
-<td>the acoustic model</td>
+<td><code>flute_model.rs</code></td>
+<td>the acoustic model, and the design as bore-tmm reads it</td>
 </tr>
 <tr>
-<td><code>octagonal_flute.py</code></td>
+<td><code>octagonal_flute.rs</code></td>
 <td>the generator, its checks and the cut file</td>
 </tr>
 <tr>
-<td><code>page_assets.py</code></td>
+<td><code>page_assets.rs</code></td>
 <td>builds <code>viewer.js</code>, <code>turn.html</code> and the plans</td>
+</tr>
+<tr>
+<td><code>bin/</code> · <code>Cargo.toml</code> · <code>Cargo.lock</code></td>
+<td>the crate: one small file per program, and the pinned build</td>
 </tr>
 <tr>
 <td><code>README.md</code> · <code>index.html</code></td>

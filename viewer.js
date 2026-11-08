@@ -1,4 +1,4 @@
-// The 3D view of every build, for index.html. Built by page_assets.py from
+// The 3D view of every build, for index.html. Built by page_assets.rs from
 // the generators' own parts: do not edit by hand.
 (function () {
   var mount = document.getElementById('turn3d');

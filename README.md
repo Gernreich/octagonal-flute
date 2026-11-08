@@ -155,7 +155,7 @@ does not work it out.
 ## What the model says
 
 ```sh
-python3 flute_model.py
+target/release/flute_model
 ```
 
 | Note | Hz | Off the scale, cents | Its octave, cents off 2:1 |
@@ -191,7 +191,7 @@ marks where the model puts the end. With every hole closed, blow the cut flute a
 read its pitch, measure from the embouchure's centre to the foot, then
 
 ```sh
-python3 flute_model.py --heard=285 --length=537   # the pitch you heard, in Hz, and that length in mm
+target/release/flute_model --heard=285 --length=537   # the pitch you heard, in Hz, and that length in mm
 ```
 
 prints the `--mouth` that explains it, and the command to redraw the flute with it.
@@ -246,17 +246,22 @@ outside face up, so the lines land on the outside.
 ## Regenerating it
 
 ```sh
-python3 flute_model.py                          # the design and how it plays
-python3 flute_model.py --mouth=1.2              # with a different embouchure correction
-python3 flute_model.py --cork=17                # with the cork elsewhere
-python3 flute_model.py --heard=285 --length=537 # the correction a cut flute implies
-python3 octagonal_flute.py --no-write           # the generator's checks, writing nothing
-python3 octagonal_flute.py --out=cut-files      # the cut file
-python3 octagonal_flute.py --kerf=0.18 --out=mine   # for a laser with a 0.18mm kerf
-python3 page_assets.py                          # viewer.js, turn.html and the two plans
+cargo build --release                                  # once, and after any change
+target/release/flute_model                             # the design and how it plays
+target/release/flute_model --mouth=1.2                 # with a different embouchure correction
+target/release/flute_model --cork=17                   # with the cork elsewhere
+target/release/flute_model --heard=285 --length=537    # the correction a cut flute implies
+target/release/flute_model --bores                     # the design, as bore-tmm reads it
+target/release/octagonal_flute --no-write              # the generator's checks, writing nothing
+target/release/octagonal_flute --out=cut-files         # the cut file
+target/release/octagonal_flute --kerf=0.18 --out=mine  # for a laser with a 0.18mm kerf
+target/release/page_assets                             # viewer.js, turn.html and the two plans
 ```
 
-`octagonal_flute.py` draws nothing until every check passes:
+The programs are Rust since 2026-11-07, Python until then; the move changed no byte of
+the cut file, the plans or the page.
+
+`octagonal_flute.rs` draws nothing until every check passes:
 
 - the model holds the scale;
 - the bore is the octagon the model plays;
@@ -272,14 +277,17 @@ python3 page_assets.py                          # viewer.js, turn.html and the t
 - every sheet fits the bed;
 - every part is on a sheet.
 
-It imports the square flute's plates, kerf and packer from `square_flute.py`, and
-the joint from the four-hole ocarinas' `polyhedron.py`, so
+The crate borrows the square flute's kerf and packer from `square_flute.rs`, the
+joint and the mitred offset from the four-hole ocarinas' `polyhedron.rs` and
+`four_hole_ocarinas.rs`, the path writer from swept-curve's `ribbon_bore.rs`, each
+note's search from bore-tmm's `src/models.rs`, and the viewer's page from the square
+flute's and the ocarinas' `page_assets.rs`. So
 [square-flute](https://github.com/Gernreich/square-flute),
-[four-hole-ocarinas](https://github.com/Gernreich/four-hole-ocarinas) and
-[swept-curve](https://github.com/Gernreich/swept-curve) must be checked out beside
-this repository.
-
-One more is optional: with [bore-tmm](https://github.com/Gernreich/bore-tmm) checked out beside it too and built (`cargo build --release`), `flute_model.py` searches for each note in bore-tmm's Rust port of it, which gives the same results bit for bit, much sooner. Without it the Python runs, as it always did.
+[four-hole-ocarinas](https://github.com/Gernreich/four-hole-ocarinas),
+[swept-curve](https://github.com/Gernreich/swept-curve),
+[bore-tmm](https://github.com/Gernreich/bore-tmm) and
+[lasermade-tools](https://github.com/Gernreich/lasermade-tools) must be checked out
+beside this repository.
 
 ## Files
 
@@ -290,9 +298,10 @@ One more is optional: with [bore-tmm](https://github.com/Gernreich/bore-tmm) che
 | `plans/octagonal-flute-top-wall.svg` · `plans/octagonal-flute-fingering.svg` | the top wall to scale, and the fingering chart — display drawings, **not** cut files |
 | `viewer.js` | the 3D view, loaded by the published page |
 | `turn.html` | the same 3D view on a page of its own, for framing elsewhere |
-| `flute_model.py` | the acoustic model |
-| `octagonal_flute.py` | the generator, its checks and the cut file |
-| `page_assets.py` | builds `viewer.js`, `turn.html` and the plans |
+| `flute_model.rs` | the acoustic model, and the design as bore-tmm reads it |
+| `octagonal_flute.rs` | the generator, its checks and the cut file |
+| `page_assets.rs` | builds `viewer.js`, `turn.html` and the plans |
+| `bin/` · `Cargo.toml` · `Cargo.lock` | the crate: one small file per program, and the pinned build |
 | `README.md` · `index.html` | this writeup and its published page; the markdown is the source |
 | `.repro` | the command that draws each generated file |
 
