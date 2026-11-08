@@ -19,3 +19,7 @@ turn.html :: target/release/page_assets --turn-to=$OUT
 plans/octagonal-flute-top-wall.svg :: target/release/page_assets --plans-to=$(dirname $OUT)
 plans/octagonal-flute-fingering.svg :: target/release/page_assets --plans-to=$(dirname $OUT)
 index.html :: ../lasermade-tools/target/release/md2html README.md $OUT
+
+# --- the STEP files: the 3D view's parts as solids for a CAD program, one
+# file per design, written from the page by lasermade-tools' step-export ---
+step/octagonal-flute-octagonal-flute-d4.step :: ../lasermade-tools/target/release/step-export viewer.js --name=octagonal-flute --out=$(dirname $OUT)
